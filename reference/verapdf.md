@@ -5,7 +5,7 @@ Utility to call verapdf command line interface.
 ## Usage
 
 ``` r
-verapdf(file)
+verapdf(file, write_to = NULL)
 ```
 
 ## Arguments
@@ -13,6 +13,10 @@ verapdf(file)
 - file:
 
   PDF file to check.
+
+- write_to:
+
+  Path to output JSON file. If `NULL`, not written.
 
 ## Value
 
