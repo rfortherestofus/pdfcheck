@@ -1,0 +1,32 @@
+---
+title: What is PDF accessibility?
+vignette: >
+  %\VignetteIndexEntry{what-is-pdf-accessibility}
+  %\VignetteEngine{quarto::html}
+  %\VignetteEncoding{UTF-8}
+knitr:
+  opts_chunk:
+    collapse: true
+    comment: '#>'
+    message: false
+---
+
+## PDF accessibility
+
+PDF accessibility ensures that everyone, including people with disabilities, can access and understand the content of a PDF. This goes beyond simply making a document readable on screen. It requires structuring the content so assistive technologies, such as screen readers, magnifiers, or voice navigation tools, can interpret it accurately. A properly tagged PDF includes logical headings, lists, tables, and links that reflect the real structure of the document. Images and charts should have alternative text that describes their purpose or meaning. Text should not be embedded as images, so users can select, search, and copy it. For example, a scanned document turned into searchable text using OCR (Optical Character Recognition) is more accessible than a flat image.
+
+There are also conformance levels defined by standards like **PDF/UA-1 (ISO 14289-1)**, which focuses on universal accessibility, and **PDF/A**, which ensures long-term preservation of content. Within **PDF/A**, levels such as **A (Accessible)**, **B (Basic)**, and **U (Unicode)** define how well a document preserves both structure and text accessibility. PDF/A-1a or PDF/A-2a, for instance, include tagged structure and language specification to meet accessibility goals, while PDF/A-1b only guarantees visual reproducibility.
+
+## Why it matters
+
+Accessible PDFs matter because they make digital information usable by everyone, not just those with perfect vision or motor control. A student using a screen reader can navigate an accessible lecture handout by headings, while an employee with low vision can increase font size without losing context. These documents also help organizations meet legal and ethical responsibilities. Laws such as the **Americans with Disabilities Act (ADA)**, **Section 508** of the Rehabilitation Act in the US, and the **Web Content Accessibility Guidelines (WCAG)** internationally all emphasize the importance of equal access.
+
+From a broader perspective, accessible PDFs improve the experience for all readers. Well-structured tagging makes documents easier to index by search engines, faster to navigate, and simpler to reuse in different formats. In large organizations or public institutions, accessibility also supports transparency and compliance.
+
+## How do we measure it
+
+To measure accessibility, tools like [**veraPDF**](https://github.com/veraPDF/veraPDF-library) help verify if a document meets the technical standards for accessible PDFs. veraPDF checks conformance with **PDF/UA** and **PDF/A** specifications by scanning for tagging issues, incorrect reading orders, missing titles, or untagged images. For example, if a document has an image without alternative text or a table without proper structure, veraPDF will flag it in its validation report.
+
+These reports show not only whether a PDF passes or fails but also which specific elements need attention. This makes it easier for content creators and developers to remediate documents before publication. Other complementary tools, such as **PAC 2024** (PDF Accessibility Checker) or Adobe Acrobat’s built-in accessibility checker, can provide further analysis or automated fixes.
+
+Ultimately, measuring and improving accessibility is an ongoing process. By using tools like veraPDF and adhering to recognized conformance levels, organizations can ensure their PDFs are truly inclusive and meet both technical and human accessibility standards.

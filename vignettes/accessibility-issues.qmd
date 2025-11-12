@@ -1,0 +1,69 @@
+---
+title: Accessibility issues
+vignette: >
+  %\VignetteIndexEntry{accessibility-issues}
+  %\VignetteEngine{quarto::html}
+  %\VignetteEncoding{UTF-8}
+knitr:
+  opts_chunk:
+    collapse: true
+    comment: '#>'
+    message: false
+---
+
+## Understanding accessibility issues
+
+When creating PDFs, accessibility issues are the most common barriers that prevent people with disabilities from reading and interacting with content. These issues typically arise from missing structure, incorrect tagging, or visual-only information that assistive technologies can’t interpret. Identifying and fixing these problems ensures that your documents are inclusive, compliant with accessibility standards, and usable by everyone.
+
+Below are the most frequent PDF accessibility issues and how to prevent them:
+
+## Missing Tags
+
+Tags define the structure of a PDF so screen readers can understand it.
+**How to avoid it:** Always tag your document before exporting it. Use headings, paragraphs, and list styles in Word or InDesign so the export tool generates proper tags automatically.
+
+## Incorrect Reading Order
+
+A screen reader follows the tag order, not the visual layout.
+**How to avoid it:** Check the reading order in your PDF editor to make sure the logical flow matches how the document is meant to be read.
+
+## No Document Title
+
+Without a title, a screen reader or browser may only show the file name.
+**How to avoid it:** Set the document title in the PDF properties under “Description” or when exporting from your authoring tool.
+
+## Images Without Alternative Text
+
+Screen readers can’t describe images unless alt text is provided.
+**How to avoid it:** Add meaningful alternative text to each image that conveys its purpose, or mark decorative images as artifacts.
+
+## Unlabeled Tables
+
+Tables need headers and structure for navigation.
+**How to avoid it:** Use table headers and ensure merged cells are tagged correctly. Avoid using tables for layout.
+
+## Improper Heading Levels
+
+Skipping from Heading 1 to Heading 4 breaks the logical hierarchy.
+**How to avoid it:** Follow a consistent heading structure (H1 → H2 → H3) so users can navigate by section.
+
+## Low Color Contrast
+
+Text that blends into the background is unreadable for users with low vision.
+**How to avoid it:** Maintain a contrast ratio of at least 4.5:1 for body text and 3:1 for large text, as per WCAG standards.
+
+## Scanned Images of Text
+
+Scanned pages are often just pictures of text and can’t be read by assistive tech.
+**How to avoid it:** Use OCR (Optical Character Recognition) to convert scanned text into selectable, searchable text.
+
+## Missing Language Specification
+
+Assistive tools need to know the document’s language to pronounce words correctly.
+**How to avoid it:** Set the document’s primary language in the PDF’s metadata.
+
+## *No Bookmarks in Long Documents
+
+Without bookmarks, navigation becomes difficult.
+**How to avoid it:** Add bookmarks for main sections and headings in longer PDFs.
+

@@ -19,3 +19,15 @@ template:
 
 pkgdown:
   as_is: yes
+
+articles:
+  - title: Accessibility Guides
+    navbar: Accessibility Guides
+    contents:
+      - what-is-pdf-accessibility
+      - how-to-make-accessible-pdf
+      - accessibility-issues
+  - title: checkpdf Guides
+    navbar: checkpdf Guides
+    contents:
+      - how-to-verify-pdf-accessibility

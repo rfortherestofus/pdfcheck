@@ -1,0 +1,16 @@
+---
+title: How to make accessible PDFs
+vignette: >
+  %\VignetteIndexEntry{how-to-make-accessible-pdf}
+  %\VignetteEngine{quarto::html}
+  %\VignetteEncoding{UTF-8}
+knitr:
+  opts_chunk:
+    collapse: true
+    comment: '#>'
+    message: false
+---
+
+## PDF creation
+
+A significant factor of PDF accessibility is how it was made. Depending on if you use Microsoft Word, Adobe Acrobat, Typst, Latex, etc, it will lead to significant different results in terms of accessibility.

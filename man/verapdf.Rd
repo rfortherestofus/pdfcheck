@@ -4,16 +4,27 @@
 \alias{verapdf}
 \title{Call verapdf CLI}
 \usage{
-verapdf(file, write_to = NULL)
+verapdf(
+  file,
+  write_to = NULL,
+  format = c("json", "xml"),
+  profile = c("ua1", "ua2", "1a", "1b", "2a", "2b", "2u", "3a", "3b", "3u", "4", "4f",
+    "4e")
+)
 }
 \arguments{
 \item{file}{PDF file to check.}
 
-\item{write_to}{Path to output JSON file. If \code{NULL}, not written.}
+\item{write_to}{Path to output file. If \code{NULL}, does not write.}
+
+\item{format}{Output format. Default to \code{"json"}.}
+
+\item{profile}{The validation profile to use. Default to \code{"ua1"} (recommended).}
 }
 \value{
 output from the CLI
 }
 \description{
-Utility to call verapdf command line interface.
+Utility to call verapdf command line interface. It requires
+the \code{verapdf} CLI to be on PATH.
 }

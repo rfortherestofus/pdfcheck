@@ -7,5 +7,7 @@ sandbox/
 inst/doc
 *.sh
 *.pdf
+!inst/pdf/*.pdf
 *.tar.gz
 *.json
+*.xml

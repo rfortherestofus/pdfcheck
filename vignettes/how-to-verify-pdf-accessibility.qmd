@@ -1,0 +1,18 @@
+---
+title: How to verify PDF accessibility
+vignette: >
+  %\VignetteIndexEntry{how-to-verify-pdf-accessibility}
+  %\VignetteEngine{quarto::html}
+  %\VignetteEncoding{UTF-8}
+knitr:
+  opts_chunk:
+    collapse: true
+    comment: '#>'
+    message: false
+---
+
+
+
+```{r}
+library(checkpdf)
+```

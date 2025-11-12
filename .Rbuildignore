@@ -18,6 +18,7 @@ dev.R
 ^LICENSE\.md$
 ^vignettes/\.quarto$
 ^vignettes/*_files$
+^inst/bin/verapdf
 ^dev/*
 ^checkpdf_
 ^data_internals/
@@ -28,4 +29,5 @@ dev.R
 ^sandbox/
 ^release.sh
 \.typ$
-\.pdf$
+\.json$
+\.xml$
