@@ -2,6 +2,9 @@
 
 export(accessibility_report)
 export(accessibility_summary)
+export(get_total_failed_checks)
+export(get_total_failed_rules)
+export(get_verapdf_version)
 export(is_pdf_compliant)
 export(verapdf)
 import(glue)
