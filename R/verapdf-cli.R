@@ -10,6 +10,8 @@
 #'
 #' @returns output from the CLI
 #'
+#' @import here
+#'
 #' @export
 verapdf <- function(
   file,
@@ -31,6 +33,8 @@ verapdf <- function(
   )
 ) {
   profile <- match.arg(profile)
+
+  file <- here::here(file)
 
   if (!file.exists(file)) {
     stop("File not found: ", file)

@@ -22,5 +22,6 @@ Config/testthat/edition: 3
 VignetteBuilder: quarto, knitr
 Imports: 
     glue,
+    here,
     jsonlite,
     utils
