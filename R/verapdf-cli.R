@@ -40,17 +40,11 @@ verapdf <- function(
     stop("File not found: ", file)
   }
 
-  cmd <- system.file("bin", "verapdf", package = "checkpdf")
-
-  if (cmd == "") {
-    if (Sys.which("verapdf") == "") {
-      stop(
-        "`verapdf` CLI not found on PATH. How to install: ",
-        "https://docs.verapdf.org/install/"
-      )
-    } else {
-      cmd <- "verapdf"
-    }
+  if (Sys.which("verapdf") == "") {
+    stop(
+      "`verapdf` CLI not found on PATH. How to install: ",
+      "https://docs.verapdf.org/install/"
+    )
   }
 
   cmd <- "verapdf"
