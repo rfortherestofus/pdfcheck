@@ -10,8 +10,3 @@
   issues](https://rfortherestofus.github.io/checkpdf/articles/accessibility-issues.md):
 - [Compliance
   levels](https://rfortherestofus.github.io/checkpdf/articles/compliance-levels.md):
-
-### checkpdf Guides
-
-- [How to verify PDF
-  accessibility](https://rfortherestofus.github.io/checkpdf/articles/how-to-verify-pdf-accessibility.md):

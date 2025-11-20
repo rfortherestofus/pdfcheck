@@ -33,20 +33,7 @@
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
 <li class="nav-item"><a class="nav-link" href="reference/index.html">Reference</a></li>
-<li class="nav-item dropdown">
-  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Accessibility Guides</h6></li>
-    <li><a class="dropdown-item" href="articles/what-is-pdf-accessibility.html">What is PDF accessibility?</a></li>
-    <li><a class="dropdown-item" href="articles/how-to-make-accessible-pdf.html">How to make accessible PDFs</a></li>
-    <li><a class="dropdown-item" href="articles/accessibility-issues.html">Accessibility issues</a></li>
-    <li><a class="dropdown-item" href="articles/compliance-levels.html">Compliance levels</a></li>
-    <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>checkpdf Guides</h6></li>
-    <li><a class="dropdown-item" href="articles/how-to-verify-pdf-accessibility.html">How to verify PDF accessibility</a></li>
-  </ul>
-</li>
+<li class="nav-item"><a class="nav-link" href="articles/index.html">Articles</a></li>
       </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
@@ -90,23 +77,56 @@ work in progress</p>
 <h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
 </h2>
 <ul>
-<li>Make sure to install verapdf (should only do once):</li>
+<li>Make sure to install verapdf*:</li>
 </ul>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">checkpdf</span><span class="fu">::</span><span class="fu"><a href="reference/install_verapdf.html">install_verapdf</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<blockquote>
+<p>*Should only do once and is <strong>not</strong> necessary if you already have the verapdf cli on PATH</p>
+</blockquote>
+<p><br></p>
 <ul>
 <li>Check that a PDF is PDF/UA-1 compliant:</li>
 </ul>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">checkpdf</span><span class="fu">::</span><span class="fu"><a href="reference/is_pdf_compliant.html">is_pdf_compliant</a></span><span class="op">(</span><span class="st">"report.pdf"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; TRUE</span></span></code></pre></div>
+<span><span class="co">#&gt; TRUE</span></span>
+<span></span>
+<span><span class="co"># check for PDF/UA-2</span></span>
+<span><span class="fu">checkpdf</span><span class="fu">::</span><span class="fu"><a href="reference/is_pdf_compliant.html">is_pdf_compliant</a></span><span class="op">(</span><span class="st">"report.pdf"</span>, profile <span class="op">=</span> <span class="st">"ua2"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; FALSE</span></span></code></pre></div>
+<p>It works with many standards: <code>profile</code> can be any of <code>ua1</code>, <code>ua2</code>, <code>1a</code>, <code>1b</code>, <code>2a</code>, <code>2b</code>, <code>2u</code>, <code>3a</code>, <code>3b</code>, <code>3u</code>, <code>4</code>, <code>4f</code>, <code>4e</code>. Default is <code>ua1</code>. You can find their meaning <a href="https://docs.verapdf.org/cli/validation/#list-profiles" class="external-link">here</a>.</p>
+<p><br></p>
 <ul>
 <li>Generate an HTML accessibility report:</li>
 </ul>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">checkpdf</span><span class="fu">::</span><span class="fu"><a href="reference/accessibility_report.html">accessibility_report</a></span><span class="op">(</span><span class="st">"report.pdf"</span><span class="op">)</span> <span class="co"># will open your browser</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Basic usage: this opens your browser</span></span>
+<span><span class="fu">checkpdf</span><span class="fu">::</span><span class="fu"><a href="reference/accessibility_report.html">accessibility_report</a></span><span class="op">(</span><span class="st">"report.pdf"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Explicit output file</span></span>
+<span><span class="fu">checkpdf</span><span class="fu">::</span><span class="fu"><a href="reference/accessibility_report.html">accessibility_report</a></span><span class="op">(</span></span>
+<span>   <span class="st">"report.pdf"</span>,</span>
+<span>   output_file <span class="op">=</span> <span class="st">"report.html"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Do not open browser</span></span>
+<span><span class="fu">checkpdf</span><span class="fu">::</span><span class="fu"><a href="reference/accessibility_report.html">accessibility_report</a></span><span class="op">(</span></span>
+<span>   <span class="st">"report.pdf"</span>,</span>
+<span>   output_file <span class="op">=</span> <span class="st">"report.html"</span>,</span>
+<span>   open <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Specify a different accessibility standard</span></span>
+<span><span class="fu">checkpdf</span><span class="fu">::</span><span class="fu"><a href="reference/accessibility_report.html">accessibility_report</a></span><span class="op">(</span></span>
+<span>   <span class="st">"report.pdf"</span>,</span>
+<span>   output_file <span class="op">=</span> <span class="st">"report.html"</span>,</span>
+<span>   open <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>   profile <span class="op">=</span> <span class="st">"ua2"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p><br></p>
 <ul>
-<li>Summary</li>
+<li>Print an accessibility summary</li>
 </ul>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">checkpdf</span><span class="fu">::</span><span class="fu"><a href="reference/accessibility_summary.html">accessibility_summary</a></span><span class="op">(</span><span class="st">"report.pdf"</span><span class="op">)</span></span>

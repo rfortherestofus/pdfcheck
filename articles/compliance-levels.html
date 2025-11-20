@@ -33,20 +33,7 @@
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
-<li class="active nav-item dropdown">
-  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Accessibility Guides</h6></li>
-    <li><a class="dropdown-item" href="../articles/what-is-pdf-accessibility.html">What is PDF accessibility?</a></li>
-    <li><a class="dropdown-item" href="../articles/how-to-make-accessible-pdf.html">How to make accessible PDFs</a></li>
-    <li><a class="dropdown-item" href="../articles/accessibility-issues.html">Accessibility issues</a></li>
-    <li><a class="dropdown-item" href="../articles/compliance-levels.html">Compliance levels</a></li>
-    <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>checkpdf Guides</h6></li>
-    <li><a class="dropdown-item" href="../articles/how-to-verify-pdf-accessibility.html">How to verify PDF accessibility</a></li>
-  </ul>
-</li>
+<li class="active nav-item"><a class="nav-link" href="../articles/index.html">Articles</a></li>
       </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
@@ -84,10 +71,68 @@
 
 
 
-
-
-
-<script id="quarto-html-after-body" type="application/javascript">
+    <p>Different profiles exist because <strong>not all archival or accessibility needs are the same</strong>. PDF standards evolve, and each profile targets a specific use case, level of strictness, or generation of the standard. veraPDF mirrors these distinctions so it can validate documents accurately against the exact rule set they claim to conform to.</p>
+<section class="level2"><h2 id="why-there-are-different-profiles">Why there are different profiles<a class="anchor" aria-label="anchor" href="#why-there-are-different-profiles"></a>
+</h2>
+<ol type="1">
+<li><p><strong>Different versions of the PDF/A standard</strong> PDF/A-1, -2, -3, and -4 were introduced at different times. Each version adds or removes features (e.g., attachments, layers, engineering data, new PDF 2.0 rules). A single profile wouldn’t be able to reflect all these variations.</p></li>
+<li><p><strong>Different strictness levels</strong> Some workflows need full accessibility and semantic structure (A-level). Others only need the document to display correctly in the future (B-level). Some need reliable text extraction without full tagging (U-level).</p></li>
+<li><p><strong>Different intended uses</strong> Archiving, accessibility, engineering content, file containers, or content reuse all require different rules. Profiles let software validate exactly the scenario a document was created for.</p></li>
+<li><p><strong>Separate standards beyond PDF/A</strong> PDF/UA (accessibility) and WTPDF (web-friendly PDF standards) define their own requirements, so they get their own profiles.</p></li>
+</ol></section><section class="level2"><h2 id="what-the-profiles-represent">What the profiles represent<a class="anchor" aria-label="anchor" href="#what-the-profiles-represent"></a>
+</h2>
+<section class="level3"><h3 id="pdfa-archival-profiles">PDF/A (archival profiles)<a class="anchor" aria-label="anchor" href="#pdfa-archival-profiles"></a>
+</h3>
+<p>Used for long-term preservation. The “parts” reflect generations of the standard:</p>
+<ul>
+<li>
+<strong>PDF/A-1</strong>: earliest, most restrictive.</li>
+<li>
+<strong>PDF/A-2</strong>: adds modern features (transparency, JPEG2000, layers, etc.).</li>
+<li>
+<strong>PDF/A-3</strong>: allows attaching non-PDF files.</li>
+<li>
+<strong>PDF/A-4</strong>: aligns with PDF 2.0 and simplifies levels.</li>
+</ul>
+<p>Each part may include levels like:</p>
+<ul>
+<li>
+<strong>A (Accessible)</strong> — full tagging and structure.</li>
+<li>
+<strong>B (Basic)</strong> — visual preservation only.</li>
+<li>
+<strong>U (Unicode)</strong> — ensures extractable text.</li>
+</ul>
+<p>So the profiles (1a, 1b, 2a, 2b, 2u…) are veraPDF’s way to validate the exact combination of part + level.</p>
+</section><section class="level3"><h3 id="pdfua-accessibility-profiles">PDF/UA (accessibility profiles)<a class="anchor" aria-label="anchor" href="#pdfua-accessibility-profiles"></a>
+</h3>
+<p>Focused entirely on ensuring documents are usable with assistive technologies.</p>
+<ul>
+<li>
+<strong>ua1</strong>: first accessibility standard.</li>
+<li>
+<strong>ua2</strong>: updated for PDF 2.0.</li>
+</ul>
+<p>These profiles check only accessibility requirements, not archival ones.</p>
+</section><section class="level3"><h3 id="wtpdf-web-technology-pdf">WTPDF (web-technology PDF)<a class="anchor" aria-label="anchor" href="#wtpdf-web-technology-pdf"></a>
+</h3>
+<p>A newer specification aimed at structured, reusable, and accessible content for digital use.</p>
+<ul>
+<li>
+<strong>wt1r</strong>: emphasizes clean content reuse.</li>
+<li>
+<strong>wt1a</strong>: accessibility-focused for web/pdf hybrid workflows.</li>
+</ul></section></section><section class="level2"><h2 id="in-short">In short<a class="anchor" aria-label="anchor" href="#in-short"></a>
+</h2>
+<ul>
+<li>
+<strong>Parts</strong> represent <em>versions</em> of the standard.</li>
+<li>
+<strong>Levels</strong> represent <em>strictness and purpose</em>.</li>
+<li>
+<strong>UA and WTPDF</strong> exist for accessibility and modern web compatibility.</li>
+<li>veraPDF provides a profile for each combination so validation matches the document’s intended claim.</li>
+</ul></section><script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
@@ -170,7 +215,8 @@
       }
     }
   });
-  </script></main>
+  </script></main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 

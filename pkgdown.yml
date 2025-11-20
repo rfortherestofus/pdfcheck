@@ -5,9 +5,8 @@ articles:
   accessibility-issues: accessibility-issues.html
   compliance-levels: compliance-levels.html
   how-to-make-accessible-pdf: how-to-make-accessible-pdf.html
-  how-to-verify-pdf-accessibility: how-to-verify-pdf-accessibility.html
   what-is-pdf-accessibility: what-is-pdf-accessibility.html
-last_built: 2025-11-20T19:50Z
+last_built: 2025-11-20T20:20Z
 urls:
   reference: https://rfortherestofus.github.io/checkpdf/reference
   article: https://rfortherestofus.github.io/checkpdf/articles
