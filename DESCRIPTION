@@ -6,7 +6,7 @@ Authors@R: c(
       person("David", "Keyes", email="david@rfortherestofus.com", role = c("aut", "cph", "cre"))
    )
 Description: An R package for checking and validating accessibility in PDFs, built on top of verapdf.
-License: MIT + file LICENSE_verapdf
+License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
