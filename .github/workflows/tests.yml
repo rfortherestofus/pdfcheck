@@ -1,0 +1,42 @@
+# Workflow derived from https://github.com/r-lib/actions/tree/v2/examples
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+name: test-units.yaml
+
+permissions: read-all
+
+jobs:
+  test-units:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Typst CLI
+        run: |
+          TYPST_VERSION=0.14.0
+          curl -L -o typst.tar.xz "https://github.com/typst/typst/releases/download/v${TYPST_VERSION}/typst-x86_64-unknown-linux-musl.tar.xz"
+          tar -xf typst.tar.xz
+          sudo mv typst-x86_64-unknown-linux-musl/typst /usr/local/bin/typst
+          typst --version
+
+      - name: Install R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+
+      - name: Install R dependencies
+        uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: any::testthat, any::xml2, any::devtools
+
+      - name: Run unit tests
+        run: |
+          devtools::load_all()
+          testthat::test_dir("tests/testthat", stop_on_failure = TRUE)
+        shell: Rscript {0}
