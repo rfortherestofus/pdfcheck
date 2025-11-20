@@ -1,0 +1,22 @@
+name: Setup veraPDF CLI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verapdf:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Build veraPDF Docker image
+        run: |
+          docker build -t verapdf-cli -f Dockerfile .
+
+      - name: Test veraPDF CLI
+        run: |
+          docker run --rm verapdf-cli --version
