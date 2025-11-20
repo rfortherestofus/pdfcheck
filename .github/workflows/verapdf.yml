@@ -1,0 +1,23 @@
+name: Build veraPDF
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verapdf:
+    runs-on: ubuntu-latest
+    env:
+      INSIDE_CI: true
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Build verapdf
+        run: |
+          wget http://downloads.verapdf.org/rel/verapdf-installer.zip
+          unzip verapdf-installer.zip
+          cd verapdf-<version>
+          ./verapdf-install

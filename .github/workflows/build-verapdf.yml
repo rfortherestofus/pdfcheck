@@ -1,26 +1,28 @@
-name: Setup veraPDF CLI
+# name: Setup veraPDF CLI
 
-on:
-  push:
-    branches: [main]
-  pull_request:
+# on:
+#   push:
+#     branches: [main]
+#   pull_request:
 
-jobs:
-  verapdf:
-    runs-on: ubuntu-latest
+# jobs:
+#   verapdf:
+#     runs-on: ubuntu-latest
+#     env:
+#       INSIDE_CI: true
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v5
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v5
 
-      - name: Build veraPDF Docker image
-        run: |
-          docker build -t verapdf-cli -f Dockerfile .
+#       - name: Build veraPDF Docker image
+#         run: |
+#           docker build -t verapdf-cli -f Dockerfile .
 
-      - name: Test veraPDF CLI
-        run: |
-          docker run --rm verapdf-cli --version
+#       - name: Test veraPDF CLI
+#         run: |
+#           docker run --rm verapdf-cli --version
 
-      - name: Run verapdf on PDFs in repo
-        run: |
-          docker run --rm -v $GITHUB_WORKSPACE:/data verapdf-cli /data/inst/pdf/compliant-1.pdf
+#       - name: Run verapdf on PDFs in repo
+#         run: |
+#           docker run --rm -v $GITHUB_WORKSPACE:/data verapdf-cli /data/inst/pdf/compliant-1.pdf

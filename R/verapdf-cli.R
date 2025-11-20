@@ -40,15 +40,38 @@ verapdf <- function(
     stop("File not found: ", file)
   }
 
-  if (Sys.which("verapdf") == "") {
+  # detect whether we're running inside the CI or not
+  ci_flag <- Sys.getenv("INSIDE_CI")
+
+  if (Sys.which("verapdf") == "" && ci_flag == "") {
     stop(
       "`verapdf` CLI not found on PATH. How to install: ",
       "https://docs.verapdf.org/install/"
     )
   }
 
-  cmd <- "verapdf"
-  args <- c("--format", "json", "--flavour", profile, file)
+  cmd <- if (ci_flag == "true") {
+    "docker"
+  } else {
+    "verapdf"
+  }
+
+  args <- if (ci_flag == "true") {
+    c(
+      "run",
+      "--rm",
+      "-v",
+      paste0(dirname(file), ":/data"),
+      "verapdf/verapdf",
+      "--format",
+      "json",
+      "--flavour",
+      profile,
+      paste0("/data/", basename(file))
+    )
+  } else {
+    c("--format", "json", "--flavour", profile, file)
+  }
 
   out_cli <- suppressWarnings(system2(cmd, args, stdout = TRUE))
 
