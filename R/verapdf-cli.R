@@ -62,7 +62,7 @@ verapdf <- function(
       "--rm",
       "-v",
       paste0(dirname(file), ":/data"),
-      "verapdf/verapdf",
+      "verapdf/verapdf-cli",
       "--format",
       "json",
       "--flavour",
