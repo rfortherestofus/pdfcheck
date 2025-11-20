@@ -31,5 +31,6 @@ jobs:
         run: |
           devtools::load_all()
           install_verapdf()
+          Sys.which("verapdf")
           testthat::test_dir("tests/testthat", stop_on_failure = TRUE)
         shell: Rscript {0}
