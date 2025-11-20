@@ -140,6 +140,22 @@ work in progress</p>
 <span><span class="co">#&gt; Passed Checks:  591</span></span>
 <span><span class="co">#&gt; Failed Rules:   11</span></span>
 <span><span class="co">#&gt; Failed Checks:  195</span></span></code></pre></div>
+<blockquote>
+<p>It is important to understand the <strong>difference between rules and checks</strong>. A rule that has been failed may be “Missing alternative text on images”, and each rule may have several checks that have been failed. For example, if the rule “Missing alt text on images” occurs 10 times in a given PDF (e.g., 10 images do not have an alternative text), that gives us 10 failed checks for that rule. More generally, <strong>a rule is a single issue, while a check corresponds to the number of times a rule has been failed</strong>.</p>
+</blockquote>
+<p><br></p>
+<ul>
+<li>Get information and stats</li>
+</ul>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/verapdf.html">verapdf</a></span><span class="op">(</span><span class="st">"report.pdf"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>   <span class="fu"><a href="reference/info.html">get_total_failed_checks</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span> <span class="fu"><a href="reference/verapdf.html">verapdf</a></span><span class="op">(</span><span class="st">"report.pdf"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>   <span class="fu"><a href="reference/info.html">get_total_failed_rules</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span> <span class="fu"><a href="reference/verapdf.html">verapdf</a></span><span class="op">(</span><span class="st">"report.pdf"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>   <span class="fu"><a href="reference/info.html">get_verapdf_version</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><br></p>
 </div>
 <div class="section level2">

@@ -37,7 +37,7 @@ about PDF accessibility."></head><body>
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Retrieve specific accessibility info</h1>
-      <small class="dont-index">Source: <a href="https://github.com/rfortherestofus/checkpdf/blob/main/R/stats.R" class="external-link"><code>R/stats.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/rfortherestofus/checkpdf/blob/main/R/info.R" class="external-link"><code>R/info.R</code></a></small>
       <div class="d-none name"><code>info.Rd</code></div>
     </div>
 
@@ -63,6 +63,16 @@ about PDF accessibility.</p>
 <dd><p>Output from <code><a href="verapdf.html">verapdf()</a></code></p></dd>
 
 </dl></div>
+    <div class="section level2">
+    <h2 id="note">Note<a class="anchor" aria-label="anchor" href="#note"></a></h2>
+    <p>It is important to understand the difference between
+rules and checks. A rule that has been failed may
+be "Missing alternative text on images", and each rule
+may have several checks that have been failed.
+For example, if the rule "Missing alt text on images" occurs
+10 times in a given PDF, that gives us 10 failed checks
+for that rule.</p>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>

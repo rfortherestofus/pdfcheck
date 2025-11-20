@@ -100,6 +100,30 @@ checkpdf::accessibility_summary("report.pdf")
 #> Failed Checks:  195
 ```
 
+> It is important to understand the **difference between rules and
+> checks**. A rule that has been failed may be “Missing alternative text
+> on images”, and each rule may have several checks that have been
+> failed. For example, if the rule “Missing alt text on images” occurs
+> 10 times in a given PDF (e.g., 10 images do not have an alternative
+> text), that gives us 10 failed checks for that rule. More generally,
+> **a rule is a single issue, while a check corresponds to the number of
+> times a rule has been failed**.
+
+  
+
+- Get information and stats
+
+``` r
+verapdf("report.pdf") |>
+   get_total_failed_checks()
+
+ verapdf("report.pdf") |>
+   get_total_failed_rules()
+
+ verapdf("report.pdf") |>
+   get_verapdf_version()
+```
+
   
 
 ## Licenses
