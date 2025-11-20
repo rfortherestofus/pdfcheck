@@ -22,6 +22,8 @@ install_verapdf <- function() {
   } else {
     file.path(Sys.getenv("USERPROFILE"), "verapdf")
   }
+  print(paste0("Installing verapdf at: ", install_path))
+  cat("\n\n")
 
   # Update the install path in a temporary XML copy
   tmp_config <- tempfile(fileext = ".xml")
