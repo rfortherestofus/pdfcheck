@@ -20,3 +20,10 @@ jobs:
       - name: Test veraPDF CLI
         run: |
           docker run --rm verapdf-cli --version
+          verapdf --version
+          which verapdf
+
+      - name: Run verapdf
+        run: |
+          verapdf --version
+          which verapdf
