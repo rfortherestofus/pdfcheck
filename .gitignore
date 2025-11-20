@@ -12,5 +12,6 @@ inst/doc
 *.json
 *.xml
 !docker-install.xml
+!inst/verapdf-greenfield-1.28.2/install-config.xml
 *.html
 !inst/report/*.html
