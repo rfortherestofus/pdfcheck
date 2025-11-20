@@ -23,6 +23,4 @@ jobs:
 
       - name: Run verapdf
         run: |
-          docker run --rm verapdf-cli --version
-          verapdf --version
-          which verapdf
+          docker run --rm verapdf-cli inst/pdf/compliant-1.pdf
