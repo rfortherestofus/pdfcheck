@@ -114,14 +114,17 @@ checkpdf::accessibility_summary("report.pdf")
 - Get information and stats
 
 ``` r
-verapdf("report.pdf") |>
-   get_total_failed_checks()
+verapdf(pdf_file) |>
+  get_total_failed_checks()
+#> 195
 
- verapdf("report.pdf") |>
-   get_total_failed_rules()
+verapdf(pdf_file) |>
+  get_total_failed_rules()
+#> 11
 
- verapdf("report.pdf") |>
-   get_verapdf_version()
+verapdf(pdf_file) |>
+  get_verapdf_version()
+#> "1.28.2"
 ```
 
   
