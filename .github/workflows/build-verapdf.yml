@@ -21,6 +21,6 @@ jobs:
         run: |
           docker run --rm verapdf-cli --version
 
-      - name: Run verapdf
+      - name: Run verapdf on PDFs in repo
         run: |
-          docker run --rm verapdf-cli ./inst/pdf/compliant-1.pdf
+          docker run --rm -v $GITHUB_WORKSPACE:/data verapdf-cli /data/inst/pdf/compliant-1.pdf
