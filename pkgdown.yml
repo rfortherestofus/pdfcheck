@@ -4,9 +4,8 @@ pkgdown_sha: ~
 articles:
   accessibility-issues: accessibility-issues.html
   compliance-levels: compliance-levels.html
-  how-to-make-accessible-pdf: how-to-make-accessible-pdf.html
   what-is-pdf-accessibility: what-is-pdf-accessibility.html
-last_built: 2026-01-08T07:34Z
+last_built: 2026-01-08T07:38Z
 urls:
   reference: https://rfortherestofus.github.io/checkpdf/reference
   article: https://rfortherestofus.github.io/checkpdf/articles
