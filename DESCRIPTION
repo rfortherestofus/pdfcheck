@@ -1,6 +1,6 @@
 Package: checkpdf
 Title: Check, Validate, And Report PDF Accessibility
-Version: 0.0.1
+Version: 0.1.0
 Authors@R: c(
       person("Joseph", "Barbier", email="joseph.barbierdarnal@gmail.com", role = "aut"),
       person("David", "Keyes", email="david@rfortherestofus.com", role = c("aut", "cph", "cre"))
