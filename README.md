@@ -98,16 +98,16 @@ checkpdf::accessibility_summary("report.pdf")
 - Get information and stats
 
 ```r
-verapdf(pdf_file) |>
-  get_total_failed_checks()
+checkpdf::verapdf(pdf_file) |>
+  checkpdf::get_total_failed_checks()
 #> 195
 
-verapdf(pdf_file) |>
-  get_total_failed_rules()
+checkpdf::verapdf(pdf_file) |>
+  checkpdf::get_total_failed_rules()
 #> 11
 
-verapdf(pdf_file) |>
-  get_verapdf_version()
+checkpdf::verapdf(pdf_file) |>
+  checkpdf::get_verapdf_version()
 #> "1.28.2"
 ```
 

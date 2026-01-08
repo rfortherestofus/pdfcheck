@@ -11,59 +11,101 @@ knitr:
     message: false
 ---
 
-## Understanding accessibility issues
+## Understanding and preventing accessibility issues
 
-When creating PDFs, accessibility issues are the most common barriers that prevent people with disabilities from reading and interacting with content. These issues typically arise from missing structure, incorrect tagging, or visual-only information that assistive technologies can’t interpret. Identifying and fixing these problems ensures that your documents are inclusive, compliant with accessibility standards, and usable by everyone.
+When creating PDFs, accessibility issues are the most common barriers that prevent people with disabilities from reading and interacting with content.
 
-Below are the most frequent PDF accessibility issues and how to prevent them:
+These issues typically arise from missing structure, incorrect tagging, or visual-only information that assistive technologies can't interpret. Identifying and fixing these problems ensures that your documents are inclusive, compliant with accessibility standards, and usable by everyone.
 
-## Missing Tags
+Note that often, it's best to prevent accessibility issues **before** exporting your PDF instead of manually applying changes afterward. Whether you use Word, LaTeX, Typst or something else, it'll greatly improve your workflow since you'll not need to re-do those changes every time you export to PDF.
 
-Tags define the structure of a PDF so screen readers can understand it.
+Personnaly, we recommend you to use [Typst](https://typst.app/) since it will cover most issues automatically and let you configure everything you want before exporting. They also provide an [accessibility guide](https://typst.app/docs/guides/accessibility/) with all best practices.
+
+## Missing tags
+
+Tags define the structure tree of a PDF so screen readers can understand it. If you're familiar with how a web page work, you can think of it as the DOM equivalent but for PDFs.
+
 **How to avoid it:** Always tag your document before exporting it. Use headings, paragraphs, and list styles in Word or InDesign so the export tool generates proper tags automatically.
 
-## Incorrect Reading Order
+> Typst tip: this is done automatically in Typst.
+
+## Incorrect reading order
 
 A screen reader follows the tag order, not the visual layout.
+
 **How to avoid it:** Check the reading order in your PDF editor to make sure the logical flow matches how the document is meant to be read.
 
-## No Document Title
+> Typst tip: Typst follows the natural order of your code to define reading order. This means that your code just needs to follow the natural logic of your document to respect this rule.
 
-Without a title, a screen reader or browser may only show the file name.
-**How to avoid it:** Set the document title in the PDF properties under “Description” or when exporting from your authoring tool.
+## No document title
 
-## Images Without Alternative Text
+Without a title, a screen reader or browser may only show the file name. This will arise with the following error message: *"The Metadata stream in the document's catalog dictionary shall contain a dc:title entry, where dc is the recommended prefix for the Dublin Core metadata schema as defined in the XMP specification, which clearly identifies the document"*.
 
-Screen readers can’t describe images unless alt text is provided.
+The goal of this is to allow people with reading disability to have information about the document without having to opening it. It's also important that you add a description in the metadata, such as in the following PDF:
+
+![Image of a PDF file metadata such as title, description, authors and date of creation.](./title.png)
+
+**How to avoid it:** Set the document title in the PDF properties under "Description" or when exporting from your authoring tool.
+
+> Typst tip: use `#set document(title: "Title of the document", description: "Describe the content of the document", author: "R for the Rest of Us")` to set the metadata.
+
+## Images without alternative text
+
+An alternative text is a paragraph that is supposed to fully replace an image. The text must clearly describe what's inside the image as well as contain the text inside the image.
+
+Screen readers can't describe images unless alt text is provided.
+
 **How to avoid it:** Add meaningful alternative text to each image that conveys its purpose, or mark decorative images as artifacts.
 
-## Unlabeled Tables
+> Typst tip: if an image is only here for styling purposes, then you can mark it as artifact. An artifact is an element that will be ignored by AT (asstive technology). You just need to replace `#image("decoration.png")` by `#pdf.artifact(image("decoration.png"))`.
 
-Tables need headers and structure for navigation.
+## Unlabeled tables
+
+Tables need headers and structure for navigation. Also keep in mind that tables should only be used to data and not page layout. If you use Typst, you'll need to use [`#grid()`](https://typst.app/docs/reference/layout/grid/#accessibility) instead for page layout.
+
 **How to avoid it:** Use table headers and ensure merged cells are tagged correctly. Avoid using tables for layout.
 
-## Improper Heading Levels
+## Improper heading levels
 
 Skipping from Heading 1 to Heading 4 breaks the logical hierarchy.
+
 **How to avoid it:** Follow a consistent heading structure (H1 → H2 → H3) so users can navigate by section.
 
-## Low Color Contrast
+## Low color contrast
 
-Text that blends into the background is unreadable for users with low vision.
+Text that blends into the background is unreadable. This does not make any difference for blind people but it's important for people with low or poor vision.
+
+<span style="background-color: #9ccdde; color: white;">This text has a too low color contrast. It has a contrast ratio of 1.72:1</span>
+
+<span style="background-color: black; color: white;">This text has a good color contrast. It has a contrast ratio of 21:1</span>
+
 **How to avoid it:** Maintain a contrast ratio of at least 4.5:1 for body text and 3:1 for large text, as per WCAG standards.
 
-## Scanned Images of Text
+> Pro tip: use this [contrast checker](https://webaim.org/resources/contrastchecker/) to see if two colors have enough contrast.
 
-Scanned pages are often just pictures of text and can’t be read by assistive tech.
-**How to avoid it:** Use OCR (Optical Character Recognition) to convert scanned text into selectable, searchable text.
+## Scanned images of text
 
-## Missing Language Specification
+Scanned pages are often just pictures of text and can't be read by assistive tech.
 
-Assistive tools need to know the document’s language to pronounce words correctly.
-**How to avoid it:** Set the document’s primary language in the PDF’s metadata.
+**How to avoid it:**
 
-## *No Bookmarks in Long Documents
+- Use OCR (Optical Character Recognition) to convert scanned text into selectable, searchable text.
+- Use complete alternative text.
+
+## Missing language specification
+
+Assistive tools need to know the document's language to pronounce words correctly.
+
+**How to avoid it:** Set the document's primary language in the PDF's metadata.
+
+> Typst tip: use `#set text(lang: "en")` where "en" is the two-letter code of the language (ISO 639-1). "en" is for English, "fr" for French, and so on.
+
+## No bookmarks in long documents
 
 Without bookmarks, navigation becomes difficult.
+
 **How to avoid it:** Add bookmarks for main sections and headings in longer PDFs.
 
+## Other issues
+
+- ***"The PDF/UA version and conformance level of a file shall be specified using the PDF/UA Identification extension schema"***. This means accessible PDFs must declare their specific version (e.g., PDF/UA-1) and conformance level (how well they meet accessibility rules) using special metadata. In Typst you just need to add `--pdf-standard ua-1` to the command line when compiling.
