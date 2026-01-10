@@ -1,4 +1,4 @@
-^checkpdf\.Rproj$
+^pdfcheck\.Rproj$
 ^\.DS_Store$
 ^\.Rproj\.user$
 ^\.pre-commit-config\.yaml$
@@ -20,7 +20,7 @@ dev.R
 ^vignettes/*_files$
 ^inst/bin/verapdf
 ^dev/*
-^checkpdf_
+^pdfcheck_
 ^data_internals/
 ^\.github$
 ^doc$

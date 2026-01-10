@@ -11,13 +11,13 @@ install_verapdf <- function() {
     "verapdf-greenfield-1.28.2",
     script_install,
     mustWork = TRUE,
-    package = "checkpdf"
+    package = "pdfcheck"
   )
   config_installation <- system.file(
     "verapdf-greenfield-1.28.2",
     "install-config.xml",
     mustWork = TRUE,
-    package = "checkpdf"
+    package = "pdfcheck"
   )
 
   install_path <- if (is_unix()) {
@@ -61,7 +61,7 @@ is_unix <- function() {
     return(FALSE)
   } else {
     stop(
-      "checkpdf only works with MacOS, Windows, and Linux at the moment, not: ",
+      "pdfcheck only works with MacOS, Windows, and Linux at the moment, not: ",
       os
     )
   }

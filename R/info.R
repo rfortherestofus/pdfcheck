@@ -18,7 +18,7 @@
 #' for that rule.
 #'
 #' @examples
-#' pdf_file <- system.file("pdf", "not-compliant-1.pdf", package = "checkpdf")
+#' pdf_file <- system.file("pdf", "not-compliant-1.pdf", package = "pdfcheck")
 #'
 #' verapdf(pdf_file) |>
 #'   get_total_failed_checks()

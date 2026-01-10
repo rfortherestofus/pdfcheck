@@ -3,10 +3,10 @@ test_that("Generated reports are valid", {
     expected_report <- system.file(
       "report",
       expected,
-      package = "checkpdf",
+      package = "pdfcheck",
       mustWork = TRUE
     )
-    pdf <- system.file("pdf", pdf, package = "checkpdf", mustWork = TRUE)
+    pdf <- system.file("pdf", pdf, package = "pdfcheck", mustWork = TRUE)
     actual_report <- accessibility_report(pdf, open = FALSE)
 
     lines_equal <- readLines(expected_report) == readLines(actual_report)

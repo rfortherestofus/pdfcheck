@@ -1,4 +1,4 @@
-url: https://rfortherestofus.github.io/checkpdf/
+url: https://rfortherestofus.github.io/pdfcheck/
 home:
   title: Check PDF accessibility
 
@@ -14,7 +14,7 @@ authors:
 template:
   bootstrap: 5
   bootswatch: journal
-  github: https://github.com/rfortherestofus/checkpdf
+  github: https://github.com/rfortherestofus/pdfcheck
   light-switch: true
 
 pkgdown:

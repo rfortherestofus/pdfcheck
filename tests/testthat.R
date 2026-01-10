@@ -7,6 +7,6 @@
 # * https://testthat.r-lib.org/articles/special-files.html
 
 library(testthat)
-library(checkpdf)
+library(pdfcheck)
 
-test_check("checkpdf")
+test_check("pdfcheck")

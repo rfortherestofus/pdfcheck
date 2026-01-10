@@ -30,7 +30,7 @@ For example, if the rule "Missing alt text on images" occurs
 for that rule.
 }
 \examples{
-pdf_file <- system.file("pdf", "not-compliant-1.pdf", package = "checkpdf")
+pdf_file <- system.file("pdf", "not-compliant-1.pdf", package = "pdfcheck")
 
 verapdf(pdf_file) |>
   get_total_failed_checks()

@@ -2,7 +2,7 @@ test_that("is PDF/A compliant", {
   pdf <- system.file(
     "pdf",
     "not-compliant-1.pdf",
-    package = "checkpdf",
+    package = "pdfcheck",
     mustWork = TRUE
   )
   output <- capture.output(accessibility_summary(pdf))
@@ -23,7 +23,7 @@ test_that("is PDF/A compliant", {
   pdf <- system.file(
     "pdf",
     "compliant-1.pdf",
-    package = "checkpdf",
+    package = "pdfcheck",
     mustWork = TRUE
   )
   output <- capture.output(accessibility_summary(pdf))
