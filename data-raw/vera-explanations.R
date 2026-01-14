@@ -1,5 +1,6 @@
 library(tidyverse)
 library(xml2)
+library(ellmer)
 
 # Download and parse veraPDF PDFUA-1 validation rules
 url <- "https://raw.githubusercontent.com/veraPDF/veraPDF-library/5c54577c665ec0b855d3000526e13d0b74d98c13/core/src/main/resources/org/verapdf/pdfa/validation/PDFUA-1.xml"
@@ -123,18 +124,13 @@ vera_explanations
 
 # Translate technical messages to user-friendly explanations ----
 
-# Install ellmer if needed
-# install.packages("ellmer")
-
-library(ellmer)
-
 # Create a chat object (using Claude as it's good at this type of task)
 # Make sure you have ANTHROPIC_API_KEY set in your .Renviron
 chat <- chat_claude(
   system_prompt = "You are an expert at translating technical PDF accessibility
   error messages into clear, friendly explanations for non-technical users.
   Your explanations should:
-  - Be concise (1-2 sentences)
+  - Be concise (1 sentence) and go straight to the point
   - Avoid technical jargon where possible
   - Explain what the issue means and why it matters for accessibility
   - Use plain language that anyone can understand
@@ -213,6 +209,10 @@ saveRDS(vera_explanations_friendly, "data-raw/vera_explanations.rds")
 write_csv(
   vera_explanations_friendly %>% select(-arguments, -references),
   "data-raw/vera_explanations.csv"
+)
+write_csv(
+  vera_explanations_friendly %>% select(-arguments, -references),
+  "inst/extdata/vera_explanations.csv"
 )
 
 cat("Files saved to data-raw/\n")
