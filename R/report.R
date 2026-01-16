@@ -97,6 +97,14 @@ accessibility_report <- function(
         "No user-friendly explanation available."
       }
 
+      how_to_fix <- if (length(explanation_idx) > 0 &&
+                        "user_friendly_fix" %in% names(explanations) &&
+                        !is.na(explanations$user_friendly_fix[explanation_idx[1]])) {
+        explanations$user_friendly_fix[explanation_idx[1]]
+      } else {
+        "No fix information available."
+      }
+
       failed_rules_df <- failed_rules_df |>
         bind_rows(data.frame(
           rule_id = c(rule_id),
@@ -104,7 +112,7 @@ accessibility_report <- function(
           clause = c(clause),
           description = c(fr$description),
           user_message = c(user_message),
-          how_to_fix = c("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.")
+          how_to_fix = c(how_to_fix)
         ))
     }
   }
