@@ -15,3 +15,4 @@ inst/doc
 !inst/verapdf-greenfield-1.28.2/install-config.xml
 *.html
 !inst/report/*.html
+test.R
