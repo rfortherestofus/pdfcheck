@@ -187,7 +187,11 @@ body {
 }
 
 .rt-td-inner {
-  padding: 30px 20px !important;
+  padding: 20px 24px !important;
+}
+
+.rt-th-inner {
+  padding: 12px 24px !important;
 }
 
 .details-content {

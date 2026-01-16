@@ -10,7 +10,7 @@
 #'
 #' @return Path to the generated HTML report (invisibly)
 #'
-#' @import glue dplyr htmltools htmlwidgets utils tibble
+#' @import glue dplyr htmltools htmlwidgets utils tibble jsonlite
 #'
 #' @export
 accessibility_report <- function(
@@ -103,13 +103,41 @@ accessibility_report <- function(
           spec = c(spec),
           clause = c(clause),
           description = c(fr$description),
-          user_message = c(user_message)
+          user_message = c(user_message),
+          how_to_fix = c("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.")
         ))
     }
   }
 
   if (nrow(failed_rules_df) > 0) {
-    failed_rules_df <- failed_rules_df |> mutate(cta_button = "Learn More")
+    # Create info icon buttons for each row with data attributes
+    failed_rules_df <- failed_rules_df |>
+      mutate(
+        iso_clean = gsub("ISO ", "", spec),
+        # Escape special characters for HTML attributes
+        rule_id_escaped = gsub('"', '&quot;', rule_id),
+        user_message_escaped = gsub('"', '&quot;', user_message),
+        iso_clean_escaped = gsub('"', '&quot;', iso_clean),
+        clause_escaped = gsub('"', '&quot;', clause),
+        description_escaped = gsub('"', '&quot;', description),
+        info_button = paste0(
+          '<button class="info-icon-btn" ',
+          'data-rule-id="', rule_id_escaped, '" ',
+          'data-explanation="', user_message_escaped, '" ',
+          'data-iso="', iso_clean_escaped, '" ',
+          'data-clause="', clause_escaped, '" ',
+          'data-verapdf="', description_escaped, '" ',
+          'aria-label="View details">',
+          '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" ',
+          'viewBox="0 0 24 24" fill="none" stroke="currentColor" ',
+          'stroke-width="2" stroke-linecap="round" stroke-linejoin="round">',
+          '<circle cx="12" cy="12" r="10"></circle>',
+          '<line x1="12" y1="16" x2="12" y2="12"></line>',
+          '<line x1="12" y1="8" x2="12.01" y2="8"></line>',
+          '</svg></button>'
+        )
+      )
+
     react_table <- reactable::reactable(
       failed_rules_df,
       defaultColDef = reactable::colDef(show = FALSE),
@@ -118,24 +146,16 @@ accessibility_report <- function(
           name = "Issue description",
           show = TRUE
         ),
-        rule_id = reactable::colDef(name = "Rule ID", width = 190, show = TRUE),
-        cta_button = reactable::colDef(
-          name = "Details",
-          width = 150,
+        how_to_fix = reactable::colDef(
+          name = "How to fix",
+          show = TRUE
+        ),
+        info_button = reactable::colDef(
+          name = "",
+          width = 70,
           show = TRUE,
-          details = function(index) {
-            div(
-              class = "details-content",
-              p(strong("Rule ID: "), failed_rules_df[index, ]$rule_id),
-              p(strong("Explanation: "), failed_rules_df[index, ]$user_message),
-              p(
-                strong("ISO: "),
-                gsub("ISO ", "", failed_rules_df[index, ]$spec)
-              ),
-              p(strong("Clause: "), failed_rules_df[index, ]$clause),
-              p(strong("veraPDF Issue: "), failed_rules_df[index, ]$description)
-            )
-          }
+          html = TRUE,
+          align = "center"
         )
       ),
       searchable = TRUE,
@@ -172,6 +192,115 @@ accessibility_report <- function(
     issue_section <- ""
   }
 
+  modal_css <- '
+    .info-icon-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #667eea;
+      padding: 4px;
+      border-radius: 4px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.2s, color 0.2s;
+    }
+    .info-icon-btn:hover {
+      background-color: #f0f0f0;
+      color: #5a6fd6;
+    }
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-overlay.active {
+      display: flex;
+    }
+    .modal-content {
+      background: white;
+      border-radius: 12px;
+      max-width: 600px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+    .modal-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid #e9ecef;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .modal-header h3 {
+      margin: 0;
+      font-size: 1.25em;
+      color: #333;
+    }
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 1.5em;
+      cursor: pointer;
+      color: #666;
+      padding: 0;
+      line-height: 1;
+    }
+    .modal-close:hover {
+      color: #333;
+    }
+    .modal-body {
+      padding: 24px;
+    }
+    .modal-body p {
+      margin: 0 0 16px 0;
+      line-height: 1.6;
+    }
+    .modal-body p:last-child {
+      margin-bottom: 0;
+    }
+    .modal-body strong {
+      color: #333;
+    }
+    .modal-intro {
+      color: #666;
+      font-style: italic;
+      border-bottom: 1px solid #e9ecef;
+      padding-bottom: 16px;
+      margin-bottom: 16px;
+    }
+  '
+
+  modal_js <- '
+    function closeModal() {
+      document.getElementById("details-modal").classList.remove("active");
+    }
+
+    document.addEventListener("click", function(e) {
+      const btn = e.target.closest(".info-icon-btn");
+      if (btn) {
+        document.getElementById("modal-rule-id").textContent = btn.dataset.ruleId || "";
+        document.getElementById("modal-explanation").textContent = btn.dataset.explanation || "";
+        document.getElementById("modal-iso").textContent = btn.dataset.iso || "";
+        document.getElementById("modal-clause").textContent = btn.dataset.clause || "";
+        document.getElementById("modal-verapdf").textContent = btn.dataset.verapdf || "";
+        document.getElementById("details-modal").classList.add("active");
+      }
+    });
+
+    document.addEventListener("keydown", function(e) {
+      if (e.key === "Escape") closeModal();
+    });
+  '
+
   html_content <- glue(
     '<!DOCTYPE html>
 <html lang="en">
@@ -183,25 +312,26 @@ accessibility_report <- function(
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
     <style>{css}</style>
+    <style>{modal_css}</style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>PDF accessibility report</h1>
+            <h1>PDF Accessibility Report</h1>
             <div class="filename">{basename(file)}</div>
         </div>
-        
+
         <div class="content">
             <div class="status-banner {status_class}">
                 {status_class}
             </div>
-            
+
             <div class="meta-info">
-                <strong>Validation profile:</strong> {toupper(profile)} | 
-                <strong>VeraPDF version:</strong> {verapdf_version} | 
+                <strong>Validation profile:</strong> {toupper(profile)} |
+                <strong>VeraPDF version:</strong> {verapdf_version} |
                 <strong>Report generated:</strong> {format(Sys.time(), "%Y-%m-%d %H:%M:%S")}
             </div>
-            
+
             <div class="stats-grid">
                 <div class="stat-card passed">
                     <div class="stat-number">{n_passed_rules}</div>
@@ -212,15 +342,35 @@ accessibility_report <- function(
                     <div class="stat-label">Failed Rules</div>
                 </div>
             </div>
-            
+
             {issue_section}
             {table_html}
         </div>
-        
+
         <div class="footer">
             Generated by <a href="https://pdfcheck.org" target="_blank"><code>pdfcheck</code></a> | <a href="https://rfortherestofus.com/" target="_blank">R for the Rest of Us</a>
         </div>
     </div>
+
+    <!-- Details Modal -->
+    <div id="details-modal" class="modal-overlay" onclick="if(event.target === this) closeModal()">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Technical Details</h3>
+                <button class="modal-close" onclick="closeModal()" aria-label="Close modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p class="modal-intro">The following technical details reference the PDF/UA standard and veraPDF validation rules. This information is intended for developers and accessibility specialists.</p>
+                <p><strong>Rule ID:</strong> <span id="modal-rule-id"></span></p>
+                <p><strong>Explanation:</strong> <span id="modal-explanation"></span></p>
+                <p><strong>ISO:</strong> <span id="modal-iso"></span></p>
+                <p><strong>Clause:</strong> <span id="modal-clause"></span></p>
+                <p><strong>veraPDF Issue:</strong> <span id="modal-verapdf"></span></p>
+            </div>
+        </div>
+    </div>
+
+    <script>{modal_js}</script>
 </body>
 </html>'
   )
