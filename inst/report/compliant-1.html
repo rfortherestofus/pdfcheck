@@ -22,7 +22,7 @@ body {
 }
 
 .container {
-  max-width: 1000px;
+  max-width: 900px;
   margin: 0 auto;
   background: white;
   border-radius: 20px;
@@ -196,7 +196,12 @@ body {
 }
 
 .rt-td-inner {
-  padding: 30px 20px !important;
+  padding: 20px 24px !important;
+  line-height: 1.65 !important;
+}
+
+.rt-th-inner {
+  padding: 12px 24px !important;
 }
 
 .details-content {
@@ -206,6 +211,154 @@ body {
 .details-content > p {
   margin-top: 10px;
 }</style>
+    <style>
+    /* Issue Cards */
+    .issue-cards-container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .issue-card {
+      background: #f9fafb;
+      border-radius: 12px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+      border: 1px solid rgba(17, 24, 39, 0.05);
+      overflow: hidden;
+      font-family: "Inter", Roboto, Arial, sans-serif;
+    }
+    .issue-card-header {
+      padding: 24px 24px 20px 24px;
+    }
+    .issue-card-label {
+      font-size: 0.75em;
+      font-weight: 600;
+      color: #6b7280;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .issue-card-label svg {
+      flex-shrink: 0;
+    }
+    .issue-card-message {
+      font-size: 1em;
+      font-weight: 400;
+      color: #111827;
+      line-height: 1.65;
+    }
+    .issue-card-body {
+      padding: 24px;
+      border-top: 1px solid rgba(17, 24, 39, 0.05);
+    }
+    .issue-card-fix {
+      font-size: 0.95em;
+      color: #4b5563;
+      line-height: 1.65;
+    }
+    .issue-card-footer {
+      padding: 24px;
+      border-top: 1px solid rgba(17, 24, 39, 0.05);
+    }
+    .more-info-btn {
+      background: transparent;
+      cursor: pointer;
+      color: #6b7280;
+      font-family: "Inter", Roboto, Arial, sans-serif;
+      font-size: 0.8em;
+      font-weight: 500;
+      padding: 6px 12px;
+      border-radius: 9999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border: 1px solid #d1d5db;
+      transition: all 0.2s;
+    }
+    .more-info-btn:hover {
+      background-color: #f3f4f6;
+      color: #4b5563;
+      border-color: #9ca3af;
+    }
+    .more-info-btn .arrow {
+      transition: transform 0.2s;
+    }
+    .more-info-btn:hover .arrow {
+      transform: translateX(3px);
+    }
+
+    /* Modal */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-overlay.active {
+      display: flex;
+    }
+    .modal-content {
+      background: white;
+      border-radius: 12px;
+      max-width: 600px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+    .modal-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid #e9ecef;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .modal-header h3 {
+      margin: 0;
+      font-size: 1.25em;
+      color: #333;
+    }
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 1.5em;
+      cursor: pointer;
+      color: #666;
+      padding: 0;
+      line-height: 1;
+    }
+    .modal-close:hover {
+      color: #333;
+    }
+    .modal-body {
+      padding: 24px;
+    }
+    .modal-body p {
+      margin: 0 0 16px 0;
+      line-height: 1.6;
+    }
+    .modal-body p:last-child {
+      margin-bottom: 0;
+    }
+    .modal-body strong {
+      color: #333;
+    }
+    .modal-intro {
+      color: #666;
+      font-style: italic;
+      border-bottom: 1px solid #e9ecef;
+      padding-bottom: 16px;
+      margin-bottom: 16px;
+    }
+  </style>
 </head>
 <body>
     <div class="container">
@@ -213,18 +366,18 @@ body {
             <h1>PDF Accessibility Report</h1>
             <div class="filename">compliant-1.pdf</div>
         </div>
-        
+
         <div class="content">
             <div class="status-banner compliant">
                 compliant
             </div>
-            
+
             <div class="meta-info">
-                <strong>Validation profile:</strong> UA1 | 
-                <strong>VeraPDF version:</strong> 1.28.2 | 
-                <strong>Report generated:</strong> 2026-01-16 12:13:45
+                <strong>Validation profile:</strong> UA1 |
+                <strong>VeraPDF version:</strong> 1.28.2 |
+                <strong>Report generated:</strong> January 17, 2026 at 01:31pm
             </div>
-            
+
             <div class="stats-grid">
                 <div class="stat-card passed">
                     <div class="stat-number">106</div>
@@ -235,14 +388,54 @@ body {
                     <div class="stat-label">Failed Rules</div>
                 </div>
             </div>
-            
+
             
             
         </div>
-        
+
         <div class="footer">
             Generated by <a href="https://pdfcheck.org" target="_blank"><code>pdfcheck</code></a> | <a href="https://rfortherestofus.com/" target="_blank">R for the Rest of Us</a>
         </div>
     </div>
+
+    <!-- Details Modal -->
+    <div id="details-modal" class="modal-overlay" onclick="if(event.target === this) closeModal()">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Technical Details</h3>
+                <button class="modal-close" onclick="closeModal()" aria-label="Close modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p class="modal-intro">The following technical details reference the PDF/UA standard and veraPDF validation rules. This information is intended for developers and accessibility specialists.</p>
+                <p><strong>Rule ID:</strong> <span id="modal-rule-id"></span></p>
+                <p><strong>Explanation:</strong> <span id="modal-explanation"></span></p>
+                <p><strong>ISO:</strong> <span id="modal-iso"></span></p>
+                <p><strong>Clause:</strong> <span id="modal-clause"></span></p>
+                <p><strong>veraPDF Issue:</strong> <span id="modal-verapdf"></span></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    function closeModal() {
+      document.getElementById("details-modal").classList.remove("active");
+    }
+
+    document.addEventListener("click", function(e) {
+      const btn = e.target.closest(".more-info-btn");
+      if (btn) {
+        document.getElementById("modal-rule-id").textContent = btn.dataset.ruleId || "";
+        document.getElementById("modal-explanation").textContent = btn.dataset.explanation || "";
+        document.getElementById("modal-iso").textContent = btn.dataset.iso || "";
+        document.getElementById("modal-clause").textContent = btn.dataset.clause || "";
+        document.getElementById("modal-verapdf").textContent = btn.dataset.verapdf || "";
+        document.getElementById("details-modal").classList.add("active");
+      }
+    });
+
+    document.addEventListener("keydown", function(e) {
+      if (e.key === "Escape") closeModal();
+    });
+  </script>
 </body>
 </html>
