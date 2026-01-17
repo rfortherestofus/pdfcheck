@@ -10,7 +10,7 @@ vera_explanations <- read_csv(
 
 # Create a chat object for generating user-friendly fixes
 chat <- chat_claude(
-system_prompt = "You are an expert at helping users fix PDF accessibility issues.
+  system_prompt = "You are an expert at helping users fix PDF accessibility issues.
 Your task is to provide clear, actionable instructions for how to fix specific accessibility problems.
 
 IMPORTANT CONTEXT: Users are creating PDFs using Quarto with either LaTeX or Typst as the PDF engine.
@@ -30,7 +30,12 @@ Your instructions should:
 )
 
 # Function to generate a user-friendly fix with error handling
-generate_fix <- function(description, message, user_friendly_message, chat_obj) {
+generate_fix <- function(
+  description,
+  message,
+  user_friendly_message,
+  chat_obj
+) {
   prompt <- glue::glue(
     "Here is information about a PDF accessibility issue:
 
@@ -91,4 +96,6 @@ write_csv(
   "data-raw/vera_explanations_with_fixes.csv"
 )
 
-cli_alert_success("File saved to {.file data-raw/vera_explanations_with_fixes.csv}")
+cli_alert_success(
+  "File saved to {.file data-raw/vera_explanations_with_fixes.csv}"
+)

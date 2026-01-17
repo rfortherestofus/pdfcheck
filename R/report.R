@@ -97,9 +97,11 @@ accessibility_report <- function(
         "No user-friendly explanation available."
       }
 
-      how_to_fix <- if (length(explanation_idx) > 0 &&
-                        "user_friendly_fix" %in% names(explanations) &&
-                        !is.na(explanations$user_friendly_fix[explanation_idx[1]])) {
+      how_to_fix <- if (
+        length(explanation_idx) > 0 &&
+          "user_friendly_fix" %in% names(explanations) &&
+          !is.na(explanations$user_friendly_fix[explanation_idx[1]])
+      ) {
         explanations$user_friendly_fix[explanation_idx[1]]
       } else {
         "No fix information available."
@@ -134,21 +136,35 @@ accessibility_report <- function(
           '<div class="issue-card-label">',
           '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>',
           'Issue</div>',
-          '<div class="issue-card-message">', htmltools::htmlEscape(user_message), '</div>',
+          '<div class="issue-card-message">',
+          htmltools::htmlEscape(user_message),
+          '</div>',
           '</div>',
           '<div class="issue-card-body">',
           '<div class="issue-card-label">',
           '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>',
           'Fix</div>',
-          '<div class="issue-card-fix">', htmltools::htmlEscape(how_to_fix), '</div>',
+          '<div class="issue-card-fix">',
+          htmltools::htmlEscape(how_to_fix),
+          '</div>',
           '</div>',
           '<div class="issue-card-footer">',
           '<button class="more-info-btn" ',
-          'data-rule-id="', rule_id_escaped, '" ',
-          'data-explanation="', user_message_escaped, '" ',
-          'data-iso="', iso_clean_escaped, '" ',
-          'data-clause="', clause_escaped, '" ',
-          'data-verapdf="', description_escaped, '">',
+          'data-rule-id="',
+          rule_id_escaped,
+          '" ',
+          'data-explanation="',
+          user_message_escaped,
+          '" ',
+          'data-iso="',
+          iso_clean_escaped,
+          '" ',
+          'data-clause="',
+          clause_escaped,
+          '" ',
+          'data-verapdf="',
+          description_escaped,
+          '">',
           'More info <span class="arrow">&rarr;</span>',
           '</button>',
           '</div>',
@@ -158,7 +174,11 @@ accessibility_report <- function(
       pull(card_html) |>
       paste0(collapse = "\n")
 
-    cards_html <- paste0('<div class="issue-cards-container">', cards_html, '</div>')
+    cards_html <- paste0(
+      '<div class="issue-cards-container">',
+      cards_html,
+      '</div>'
+    )
   } else {
     cards_html <- ""
   }
