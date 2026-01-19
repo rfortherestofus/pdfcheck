@@ -23,7 +23,7 @@ install_verapdf <- function() {
   install_path <- if (is_unix()) {
     file.path(Sys.getenv("HOME"), "verapdf")
   } else {
-    file.path(Sys.getenv("USERPROFILE"), "verapdf")
+    file.path(Sys.getenv("USERPROFILE"), "verapdf", fsep = "\\")
   }
   print(paste0("Installing verapdf at: ", install_path))
   cat("\n\n")
@@ -37,12 +37,24 @@ install_verapdf <- function() {
   )
   writeLines(xml_content, tmp_config)
 
+  cat(verapdf_installer, " ", tmp_config)
   system2(command = verapdf_installer, args = c(tmp_config))
 
   # Add the install folder to PATH so R can find verapdf
   if (is_unix()) {
     Sys.setenv(PATH = paste(install_path, Sys.getenv("PATH"), sep = ":"))
   } else {
+    # Persistently add install_path to Windows PATH
+    install_path <- normalizePath(
+      install_path,
+      winslash = "\\",
+      mustWork = TRUE
+    )
+
+    # Add permanently for current user
+    system2("setx", args = c("PATH", paste0("\"%PATH%;", install_path, "\"")))
+
+    # Also update R session PATH
     Sys.setenv(PATH = paste(install_path, Sys.getenv("PATH"), sep = ";"))
   }
 
