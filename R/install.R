@@ -28,6 +28,11 @@ install_verapdf <- function() {
   print(paste0("Installing verapdf at: ", install_path))
   cat("\n\n")
 
+  if (!is_unix()) {
+    install_path <- file.path(Sys.getenv("USERPROFILE"), "verapdf")
+    dir.create(install_path, recursive = TRUE, showWarnings = FALSE)
+  }
+
   tmp_config <- tempfile(fileext = ".xml")
   xml_content <- readLines(config_installation)
   xml_content <- gsub(
