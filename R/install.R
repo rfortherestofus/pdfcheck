@@ -15,7 +15,7 @@ install_verapdf <- function() {
   )
   config_installation <- system.file(
     "verapdf-greenfield-1.28.2",
-    "install-config.xml",
+    if (is_unix()) "install-config.xml" else "install-config-windows.xml",
     mustWork = TRUE,
     package = "pdfcheck"
   )
