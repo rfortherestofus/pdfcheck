@@ -64,7 +64,8 @@ install_verapdf <- function() {
   }
 
   message("verapdf installed and PATH updated.")
-  print(Sys.which("verapdf"))
+  cli_name <- if (is_unix()) "verapdf" else "verapdf.bat"
+  print(Sys.which(cli_name))
 }
 
 
