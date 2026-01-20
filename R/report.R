@@ -211,6 +211,7 @@ accessibility_report <- function(
       border: 1px solid rgba(17, 24, 39, 0.05);
       overflow: hidden;
       font-family: "Inter", Roboto, Arial, sans-serif;
+      margin-bottom: 20px;
     }
     .issue-card-header {
       padding: 24px 24px 20px 24px;
