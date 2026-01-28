@@ -1,4 +1,4 @@
-# pdfcheck: Check, validate, and report PDF accessibility
+# **pdf**check: Check, validate, and report PDF accessibility
 
 [pdfcheck](https://rfortherestofus.github.io/pdfcheck/) is an R package
 that aims to make checking the accessibility of PDF files as easy as
