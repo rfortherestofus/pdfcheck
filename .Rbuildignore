@@ -12,6 +12,7 @@ source/*
 air.toml
 dev.R
 \*.zip
+\hex-sticker.png
 ^docs$
 ^_pkgdown\.yaml$
 ^pkgdown$
