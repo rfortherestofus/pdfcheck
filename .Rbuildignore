@@ -31,3 +31,4 @@ dev.R
 ^release.sh
 \.typ$
 \.json$
+^data-raw$

@@ -4,16 +4,21 @@
 \alias{accessibility_report}
 \title{Accessibility report}
 \usage{
-accessibility_report(file, profile = "ua1", output_file = NULL, open = TRUE)
+accessibility_report(
+  file,
+  profile = "ua1",
+  output_file = tempfile(fileext = ".html"),
+  open = TRUE
+)
 }
 \arguments{
 \item{file}{PDF file to check.}
 
-\item{profile}{The validation profile to use. Default to \code{"ua1"} (recommended).}
+\item{profile}{The validation profile to use. Default to \code{"ua1"}.}
 
-\item{output_file}{Path for the HTML report. If NULL, creates a temp file.}
+\item{output_file}{Path for the HTML report. If \code{NULL}, creates a temp file.}
 
-\item{open}{Whether to automatically open the report in browser. Default TRUE.}
+\item{open}{Whether to automatically open the report in browser. Default \code{TRUE}.}
 }
 \value{
 Path to the generated HTML report (invisibly)

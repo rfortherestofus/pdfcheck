@@ -13,7 +13,7 @@ body {
 }
 
 .container {
-  max-width: 1000px;
+  max-width: 900px;
   margin: 0 auto;
   background: white;
   border-radius: 20px;
@@ -130,10 +130,6 @@ body {
   border-bottom: 1px solid #e9ecef;
 }
 
-.issue-row:hover {
-  background-color: #f8f9fa;
-}
-
 .spec-cell {
   font-weight: 600;
   color: #667eea;
@@ -148,6 +144,13 @@ body {
 
 .desc-cell {
   line-height: 1.6;
+}
+
+.explanation-cell {
+  line-height: 1.6;
+  background: #f0f8ff;
+  font-style: italic;
+  color: #555;
 }
 
 .count-cell {
@@ -181,4 +184,21 @@ body {
   margin-bottom: 30px;
   font-size: 0.95em;
   color: #666;
+}
+
+.rt-td-inner {
+  padding: 20px 24px !important;
+  line-height: 1.65 !important;
+}
+
+.rt-th-inner {
+  padding: 12px 24px !important;
+}
+
+.details-content {
+  padding: 20px;
+}
+
+.details-content > p {
+  margin-top: 10px;
 }

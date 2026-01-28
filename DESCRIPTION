@@ -21,7 +21,12 @@ Suggests:
 Config/testthat/edition: 3
 VignetteBuilder: quarto, knitr
 Imports: 
+    dplyr,
     glue,
     here,
+    htmltools,
+    htmlwidgets,
     jsonlite,
+    reactable,
+    tibble,
     utils
