@@ -1,6 +1,15 @@
+<div align="center">
+
 # **pdf**check: Check, validate, and report PDF accessibility
 
+</div>
+
+<img src="https://github.com/rfortherestofus/pdfcheck/blob/main/hex-sticker.png?raw=true" alt="pdfcheck R package logo" align="right" width="160px"/>
+
 `{pdfcheck}` is an R package that aims to make checking the accessibility of PDF files as easy as possible. It relies on [verapdf](https://github.com/veraPDF/veraPDF-library) (which does all the hard work in the background) and uses it to provide detailed reports on issues found in your PDF files.
+
+> [!NOTE]
+> PDF accessibility ensures that everyone, including people with disabilities, can access and understand the content of a PDF.
 
 <br>
 
