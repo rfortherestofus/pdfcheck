@@ -15,4 +15,5 @@ inst/doc
 !inst/verapdf-greenfield-1.28.2/install-config*
 *.html
 !inst/report/*.html
+test.R
 User*
