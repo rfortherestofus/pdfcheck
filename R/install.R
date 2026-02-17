@@ -61,7 +61,11 @@ install_verapdf <- function() {
   # Post-install: Detect executable location
   # Check root first, then bin
   possible_bins <- c(install_path, file.path(install_path, "bin"))
-  executable_names <- if (is_unix()) "verapdf" else c("verapdf.bat", "verapdf.cmd", "verapdf.exe")
+  executable_names <- if (is_unix()) {
+    "verapdf"
+  } else {
+    c("verapdf.bat", "verapdf.cmd", "verapdf.exe")
+  }
 
   found_bin <- NULL
   for (path in possible_bins) {
