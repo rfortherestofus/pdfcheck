@@ -1,8 +1,7 @@
 #' @title Install veraPDF CLI
 #'
 #' @description
-#' Robust utility to install veraPDF. Handles Windows path limits and
-#' version-specific directory structures.
+#' Utility function to install veraPDF.
 #'
 #' @export
 install_verapdf <- function() {
