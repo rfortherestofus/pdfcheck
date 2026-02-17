@@ -30,10 +30,10 @@ install_verapdf <- function() {
   install_path <- if (is_unix()) {
     file.path(Sys.getenv("HOME"), "verapdf")
   } else {
-    # Normalize to backslashes for the Windows installer [7]
+    # Use forward slashes to avoid backslash escaping edge cases in XML replacement.
     normalizePath(
       file.path(Sys.getenv("USERPROFILE"), "verapdf"),
-      winslash = "\\",
+      winslash = "/",
       mustWork = FALSE
     )
   }
@@ -46,11 +46,12 @@ install_verapdf <- function() {
 
   tmp_config <- tempfile(fileext = ".xml")
   xml_content <- readLines(config_installation)
-  # Ensure the XML contains the correctly formatted path [7, 8]
-  xml_content <- gsub(
-    "<installpath>.*</installpath>",
-    glue::glue("<installpath>{install_path}</installpath>"),
-    xml_content
+  installpath_idx <- grep("<installpath>.*</installpath>", xml_content)
+  if (length(installpath_idx) != 1) {
+    stop("Could not find a unique <installpath> entry in installer config.")
+  }
+  xml_content[installpath_idx] <- glue::glue(
+    "        <installpath>{install_path}</installpath>"
   )
   writeLines(xml_content, tmp_config)
 
@@ -60,19 +61,59 @@ install_verapdf <- function() {
   # Post-install: Detect executable location
   # Check root first, then bin
   possible_bins <- c(install_path, file.path(install_path, "bin"))
-  executable_name <- if (is_unix()) "verapdf" else "verapdf.bat"
+  executable_names <- if (is_unix()) "verapdf" else c("verapdf.bat", "verapdf.cmd", "verapdf.exe")
 
   found_bin <- NULL
   for (path in possible_bins) {
-    if (file.exists(file.path(path, executable_name))) {
-      found_bin <- path
+    for (executable_name in executable_names) {
+      if (file.exists(file.path(path, executable_name))) {
+        found_bin <- path
+        break
+      }
+    }
+    if (!is.null(found_bin)) {
       break
     }
   }
 
+  if (is.null(found_bin) && !is_unix() && dir.exists(install_path)) {
+    recursive_matches <- list.files(
+      install_path,
+      pattern = "^verapdf\\.(bat|cmd|exe)$",
+      recursive = TRUE,
+      full.names = TRUE,
+      ignore.case = TRUE
+    )
+    if (length(recursive_matches) > 0) {
+      found_bin <- dirname(recursive_matches[[1]])
+    }
+  }
+
   if (is.null(found_bin)) {
+    installed_files <- if (dir.exists(install_path)) {
+      head(
+        list.files(
+          install_path,
+          recursive = TRUE,
+          full.names = FALSE,
+          all.files = TRUE
+        ),
+        30
+      )
+    } else {
+      character()
+    }
+    details <- if (length(installed_files) > 0) {
+      paste0(
+        " First installed files detected under install path: ",
+        paste(installed_files, collapse = ", ")
+      )
+    } else {
+      " Install path does not exist or is empty after installer run."
+    }
     stop(
-      "Installation finished, but verapdf executable was not found in root or bin folder."
+      "Installation finished, but verapdf executable was not found in expected locations.",
+      details
     )
   }
 
