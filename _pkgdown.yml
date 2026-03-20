@@ -21,6 +21,9 @@ pkgdown:
   as_is: yes
 
 articles:
+  - title: App
+    contents:
+      - check-you-pdf-app
   - title: Accessibility Guides
     contents:
       - what-is-pdf-accessibility
