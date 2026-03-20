@@ -1,0 +1,371 @@
+---
+title: Check your PDF accessibility
+vignette: >
+  %\VignetteIndexEntry{check-you-pdf-app}
+  %\VignetteEngine{quarto::html}
+  %\VignetteEncoding{UTF-8}
+knitr:
+  opts_chunk:
+    collapse: true
+    comment: '#>'
+    message: false
+---
+
+This page lets a user upload a PDF, send it to the accessibility API, and open the returned HTML report in a new browser tab.
+
+```{=html}
+<style>
+.pdfcheck-app {
+  margin: 1.5rem 0 2rem;
+}
+
+.pdfcheck-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 8px 24px rgba(17, 24, 39, 0.04);
+}
+
+.pdfcheck-card {
+  padding: 1.25rem;
+}
+
+.pdfcheck-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.pdfcheck-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.pdfcheck-upload {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  padding: 0.7rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: linear-gradient(180deg, #ffffff 0%, #f9fafb 100%);
+  color: #111827;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 120ms ease, box-shadow 120ms ease, transform 120ms ease;
+}
+
+.pdfcheck-upload:hover,
+.pdfcheck-upload:focus-visible {
+  border-color: #9ca3af;
+  box-shadow: 0 2px 8px rgba(17, 24, 39, 0.08);
+  transform: translateY(-1px);
+}
+
+.pdfcheck-file {
+  display: none;
+  margin: 0.85rem 0 0;
+  color: #4b5563;
+  font-size: 0.95rem;
+}
+
+.pdfcheck-file.is-visible {
+  display: block;
+}
+
+.pdfcheck-actions {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0.9rem;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.pdfcheck-actions > * {
+  flex: 0 0 auto;
+}
+
+.pdfcheck-button,
+.pdfcheck-download {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  min-height: 2.75rem;
+  padding: 0.7rem 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 120ms ease, box-shadow 120ms ease, background 120ms ease, border-color 120ms ease;
+}
+
+.pdfcheck-button {
+  border: none;
+  background: linear-gradient(180deg, #1f2937 0%, #111827 100%);
+  color: #ffffff;
+  box-shadow: 0 8px 18px rgba(17, 24, 39, 0.14);
+}
+
+.pdfcheck-button:hover,
+.pdfcheck-button:focus-visible {
+  background: linear-gradient(180deg, #111827 0%, #000000 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgba(17, 24, 39, 0.16);
+}
+
+.pdfcheck-button:disabled {
+  opacity: 0.7;
+  cursor: wait;
+  transform: none;
+  box-shadow: none;
+}
+
+.pdfcheck-download {
+  border: 1px solid #d1d5db;
+  color: #111827;
+  background: #ffffff;
+}
+
+.pdfcheck-download:hover,
+.pdfcheck-download:focus-visible {
+  border-color: #9ca3af;
+  transform: translateY(-1px);
+}
+
+.pdfcheck-download[hidden] {
+  display: none;
+}
+
+.pdfcheck-status {
+  display: none;
+  margin-top: 0.9rem;
+  padding: 0.85rem 1rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+}
+
+.pdfcheck-status.is-visible {
+  display: block;
+}
+
+.pdfcheck-status--info {
+  background: #f3f4f6;
+  color: #111827;
+}
+
+.pdfcheck-status--error {
+  background: #fef2f2;
+  color: #991b1b;
+}
+
+.pdfcheck-spinner {
+  width: 0.95rem;
+  height: 0.95rem;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #ffffff;
+  border-radius: 999px;
+  animation: pdfcheck-spin 0.8s linear infinite;
+}
+
+.pdfcheck-spinner[hidden] {
+  display: none;
+}
+
+@keyframes pdfcheck-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+</style>
+
+<div class="pdfcheck-app">
+  <form id="pdfcheck-form" class="pdfcheck-card">
+    <label class="pdfcheck-label" for="pdfcheck-file-input">PDF file</label>
+    <input
+      id="pdfcheck-file-input"
+      class="pdfcheck-input"
+      type="file"
+      accept=".pdf,application/pdf"
+    >
+
+    <div id="pdfcheck-file" class="pdfcheck-file" aria-live="polite"></div>
+
+    <div class="pdfcheck-actions">
+      <label class="pdfcheck-upload" for="pdfcheck-file-input">Choose PDF</label>
+      <button id="pdfcheck-submit" class="pdfcheck-button" type="submit">
+        <span id="pdfcheck-submit-spinner" class="pdfcheck-spinner" hidden></span>
+        <span id="pdfcheck-submit-label">Send to API</span>
+      </button>
+      <a
+        id="pdfcheck-download"
+        class="pdfcheck-download"
+        href="#"
+        target="_blank"
+        rel="noopener noreferrer"
+        download
+        hidden
+      >
+        Download HTML
+      </a>
+    </div>
+
+    <div id="pdfcheck-status" class="pdfcheck-status" aria-live="polite"></div>
+  </form>
+</div>
+
+<script>
+(() => {
+  const endpoint = "https://pdfcheck-api-4i9ct.ondigitalocean.app/accessibility";
+
+  const form = document.getElementById("pdfcheck-form");
+  const input = document.getElementById("pdfcheck-file-input");
+  const fileBox = document.getElementById("pdfcheck-file");
+  const submit = document.getElementById("pdfcheck-submit");
+  const submitLabel = document.getElementById("pdfcheck-submit-label");
+  const submitSpinner = document.getElementById("pdfcheck-submit-spinner");
+  const status = document.getElementById("pdfcheck-status");
+  const download = document.getElementById("pdfcheck-download");
+
+  let selectedFile = null;
+  let reportUrl = null;
+
+  const formatSize = (bytes) => {
+    if (!Number.isFinite(bytes) || bytes <= 0) {
+      return "unknown size";
+    }
+
+    const units = ["B", "KB", "MB", "GB"];
+    const power = Math.min(Math.floor(Math.log(bytes) / Math.log(1024)), units.length - 1);
+    const value = bytes / 1024 ** power;
+    return `${value.toFixed(value >= 10 || power === 0 ? 0 : 1)} ${units[power]}`;
+  };
+
+  const clearDownload = () => {
+    if (reportUrl) {
+      URL.revokeObjectURL(reportUrl);
+      reportUrl = null;
+    }
+
+    download.hidden = true;
+    download.removeAttribute("href");
+    download.removeAttribute("download");
+  };
+
+  const setStatus = (tone, message) => {
+    status.className = `pdfcheck-status pdfcheck-status--${tone} is-visible`;
+    status.textContent = message;
+  };
+
+  const setLoading = (loading) => {
+    submit.disabled = loading;
+    submitSpinner.hidden = !loading;
+    submitLabel.textContent = loading ? "Waiting for report..." : "Send to API";
+  };
+
+  const validateFile = (file) => {
+    if (!file) {
+      return "Choose a PDF before sending the request.";
+    }
+
+    const isPdf = file.type === "application/pdf" || /\.pdf$/i.test(file.name);
+    if (!isPdf) {
+      return "Only PDF files are accepted.";
+    }
+
+    return null;
+  };
+
+  input.addEventListener("change", () => {
+    const [file] = Array.from(input.files || []);
+    const error = validateFile(file);
+
+    if (error) {
+      selectedFile = null;
+      fileBox.className = "pdfcheck-file";
+      fileBox.textContent = "";
+      setStatus("error", error);
+      return;
+    }
+
+    selectedFile = file;
+    fileBox.className = "pdfcheck-file is-visible";
+    fileBox.textContent = `${file.name} (${formatSize(file.size)})`;
+    status.className = "pdfcheck-status";
+    status.textContent = "";
+  });
+
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const error = validateFile(selectedFile);
+    if (error) {
+      setStatus("error", error);
+      return;
+    }
+
+    setLoading(true);
+    clearDownload();
+
+    setStatus("info", "Uploading PDF and waiting for the HTML report...");
+
+    try {
+      const formData = new FormData();
+      formData.append("file", selectedFile, selectedFile.name);
+
+      const response = await fetch(endpoint, {
+        method: "POST",
+        body: formData
+      });
+
+      if (!response.ok) {
+        throw new Error(`The API returned ${response.status} ${response.statusText}.`);
+      }
+
+      const html = await response.text();
+      reportUrl = URL.createObjectURL(new Blob([html], { type: "text/html" }));
+
+      let opened = false;
+      const reportWindow = window.open(reportUrl, "_blank");
+
+      if (reportWindow) {
+        reportWindow.opener = null;
+        opened = true;
+      }
+
+      const reportName = selectedFile.name.replace(/\.pdf$/i, "") || "accessibility-report";
+      download.href = reportUrl;
+      download.download = `${reportName}-accessibility-report.html`;
+      download.hidden = false;
+
+      setStatus(
+        "info",
+        opened
+          ? "Report ready. It opened in a new tab."
+          : "Report ready. Your browser blocked the new tab, but you can use the download link."
+      );
+    } catch (error) {
+      const message = error instanceof TypeError
+        ? "The browser could not reach the API. Check network access or CORS settings on the endpoint."
+        : error.message;
+
+      if (reportWindow && !reportWindow.closed) {
+        reportWindow.close();
+      }
+
+      setStatus("error", message);
+    } finally {
+      setLoading(false);
+    }
+  });
+})();
+</script>
+```
