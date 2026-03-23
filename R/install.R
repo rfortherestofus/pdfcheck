@@ -48,36 +48,69 @@ install_verapdf <- function() {
   }
 
   find_verapdf_bin <- function(install_path, executable_name) {
-    candidates <- c(
+    local_candidates <- c(
       install_path,
       file.path(install_path, "bin")
     )
 
-    for (path in candidates) {
+    for (path in local_candidates) {
       exe <- file.path(path, executable_name)
       if (file.exists(exe)) {
-        return(normalizePath(path, winslash = "\\", mustWork = TRUE))
+        return(dirname(normalizePath(exe, winslash = "\\", mustWork = TRUE)))
       }
     }
 
-    nested <- list.files(
-      install_path,
-      pattern = paste0("^", gsub("\\.", "\\\\.", executable_name), "$"),
-      recursive = TRUE,
-      full.names = TRUE,
-      ignore.case = TRUE,
-      all.files = FALSE,
-      no.. = TRUE
+    nested <- tryCatch(
+      list.files(
+        install_path,
+        pattern = paste0("^", gsub("\\.", "\\\\.", executable_name), "$"),
+        recursive = TRUE,
+        full.names = TRUE,
+        ignore.case = TRUE,
+        no.. = TRUE
+      ),
+      error = function(...) character()
     )
 
+    nested <- nested[file.exists(nested)]
     if (length(nested) > 0) {
-      nested <- nested[file.info(nested)$isdir %in% FALSE]
-      if (length(nested) > 0) {
-        return(dirname(normalizePath(
-          nested[[1]],
-          winslash = "\\",
-          mustWork = TRUE
-        )))
+      return(dirname(normalizePath(
+        nested[[1]],
+        winslash = "\\",
+        mustWork = TRUE
+      )))
+    }
+
+    if (.Platform$OS.type == "windows") {
+      roots <- unique(c(
+        Sys.getenv("USERPROFILE"),
+        Sys.getenv("LOCALAPPDATA"),
+        Sys.getenv("ProgramFiles"),
+        Sys.getenv("ProgramFiles(x86)")
+      ))
+      roots <- roots[nzchar(roots) & dir.exists(roots)]
+
+      for (root in roots) {
+        hits <- tryCatch(
+          list.files(
+            root,
+            pattern = paste0("^", gsub("\\.", "\\\\.", executable_name), "$"),
+            recursive = TRUE,
+            full.names = TRUE,
+            ignore.case = TRUE,
+            no.. = TRUE
+          ),
+          error = function(...) character()
+        )
+
+        hits <- hits[file.exists(hits)]
+        if (length(hits) > 0) {
+          return(dirname(normalizePath(
+            hits[[1]],
+            winslash = "\\",
+            mustWork = TRUE
+          )))
+        }
       }
     }
 
@@ -127,6 +160,8 @@ install_verapdf <- function() {
   )
   writeLines(xml_content, tmp_config)
 
+  message("Using installer config: ", tmp_config)
+  message(paste(readLines(tmp_config, warn = FALSE), collapse = "\n"))
   result <- system2(
     command = verapdf_installer,
     args = shQuote(tmp_config),
@@ -142,20 +177,37 @@ install_verapdf <- function() {
   found_bin <- find_verapdf_bin(install_path, executable_name)
 
   if (is.null(found_bin)) {
-    contents <- tryCatch(
+    local_contents <- tryCatch(
       list.files(install_path, recursive = TRUE, full.names = TRUE),
       error = function(...) character()
     )
+
+    roots <- if (.Platform$OS.type == "windows") {
+      unique(c(
+        Sys.getenv("USERPROFILE"),
+        Sys.getenv("LOCALAPPDATA"),
+        Sys.getenv("ProgramFiles"),
+        Sys.getenv("ProgramFiles(x86)")
+      ))
+    } else {
+      install_path
+    }
+
+    searched_roots <- roots[nzchar(roots)]
 
     stop(
       paste0(
         "Installation finished, but ",
         executable_name,
-        " was not found under: ",
+        " was not found.\n",
+        "Configured install path: ",
         install_path,
         "\n",
-        "Discovered files:\n",
-        paste(utils::head(contents, 50), collapse = "\n")
+        "Contents under configured path:\n",
+        paste(utils::head(local_contents, 50), collapse = "\n"),
+        "\n",
+        "Searched roots:\n",
+        paste(searched_roots, collapse = "\n")
       )
     )
   }
