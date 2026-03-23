@@ -63,6 +63,7 @@ install_verapdf <- function() {
     package = "pdfcheck"
   )
 
+  # Use consistent path separators for Windows [5, 6]
   install_path <- if (is_unix()) {
     file.path(Sys.getenv("HOME"), "verapdf")
   } else {
@@ -116,6 +117,7 @@ install_verapdf <- function() {
     stop(
       "Installation finished, but verapdf executable was not found in root or bin folder."
     )
+    message("Persistent variable VERAPDF_BIN created to avoid PATH truncation.")
   }
 
   sep <- if (is_unix()) ":" else ";"

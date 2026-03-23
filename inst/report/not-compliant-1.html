@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PDF Accessibility Report</title>
+    <title>pdfcheck | PDF Accessibility Report</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
-    <style>
-        * {
+    <style>* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -23,7 +22,7 @@ body {
 }
 
 .container {
-  max-width: 1000px;
+  max-width: 900px;
   margin: 0 auto;
   background: white;
   border-radius: 20px;
@@ -140,10 +139,6 @@ body {
   border-bottom: 1px solid #e9ecef;
 }
 
-.issue-row:hover {
-  background-color: #f8f9fa;
-}
-
 .spec-cell {
   font-weight: 600;
   color: #667eea;
@@ -158,6 +153,13 @@ body {
 
 .desc-cell {
   line-height: 1.6;
+}
+
+.explanation-cell {
+  line-height: 1.6;
+  background: #f0f8ff;
+  font-style: italic;
+  color: #555;
 }
 
 .count-cell {
@@ -192,143 +194,263 @@ body {
   font-size: 0.95em;
   color: #666;
 }
-    </style>
+
+.rt-td-inner {
+  padding: 20px 24px !important;
+  line-height: 1.65 !important;
+}
+
+.rt-th-inner {
+  padding: 12px 24px !important;
+}
+
+.details-content {
+  padding: 20px;
+}
+
+.details-content > p {
+  margin-top: 10px;
+}</style>
+    <style>
+    /* Issue Cards */
+    .issue-cards-container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .issue-card {
+      background: #f9fafb;
+      border-radius: 12px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+      border: 1px solid rgba(17, 24, 39, 0.05);
+      overflow: hidden;
+      font-family: "Inter", Roboto, Arial, sans-serif;
+      margin-bottom: 20px;
+    }
+    .issue-card-header {
+      padding: 24px 24px 20px 24px;
+    }
+    .issue-card-label {
+      font-size: 0.75em;
+      font-weight: 600;
+      color: #6b7280;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .issue-card-label svg {
+      flex-shrink: 0;
+    }
+    .issue-card-message {
+      font-size: 1em;
+      font-weight: 400;
+      color: #111827;
+      line-height: 1.65;
+    }
+    .issue-card-body {
+      padding: 24px;
+      border-top: 1px solid rgba(17, 24, 39, 0.05);
+    }
+    .issue-card-fix {
+      font-size: 0.95em;
+      color: #4b5563;
+      line-height: 1.65;
+    }
+    .issue-card-footer {
+      padding: 24px;
+      border-top: 1px solid rgba(17, 24, 39, 0.05);
+    }
+    .more-info-btn {
+      background: transparent;
+      cursor: pointer;
+      color: #6b7280;
+      font-family: "Inter", Roboto, Arial, sans-serif;
+      font-size: 0.8em;
+      font-weight: 500;
+      padding: 6px 12px;
+      border-radius: 9999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border: 1px solid #d1d5db;
+      transition: all 0.2s;
+    }
+    .more-info-btn:hover {
+      background-color: #f3f4f6;
+      color: #4b5563;
+      border-color: #9ca3af;
+    }
+    .more-info-btn .arrow {
+      transition: transform 0.2s;
+    }
+    .more-info-btn:hover .arrow {
+      transform: translateX(3px);
+    }
+
+    /* Modal */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-overlay.active {
+      display: flex;
+    }
+    .modal-content {
+      background: white;
+      border-radius: 12px;
+      max-width: 600px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+    .modal-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid #e9ecef;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .modal-header h3 {
+      margin: 0;
+      font-size: 1.25em;
+      color: #333;
+    }
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 1.5em;
+      cursor: pointer;
+      color: #666;
+      padding: 0;
+      line-height: 1;
+    }
+    .modal-close:hover {
+      color: #333;
+    }
+    .modal-body {
+      padding: 24px;
+    }
+    .modal-body p {
+      margin: 0 0 16px 0;
+      line-height: 1.6;
+    }
+    .modal-body p:last-child {
+      margin-bottom: 0;
+    }
+    .modal-body strong {
+      color: #333;
+    }
+    .modal-intro {
+      color: #666;
+      font-style: italic;
+      border-bottom: 1px solid #e9ecef;
+      padding-bottom: 16px;
+      margin-bottom: 16px;
+    }
+  </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>PDF accessibility report</h1>
+            <h1>PDF Accessibility Report</h1>
             <div class="filename">not-compliant-1.pdf</div>
         </div>
-        
+
         <div class="content">
             <div class="status-banner non-compliant">
                 non-compliant
             </div>
-            
+
             <div class="meta-info">
-                <strong>Validation profile:</strong> UA1 | 
-                <strong>VeraPDF version:</strong> 1.28.2 | 
-                <strong>Report generated:</strong> 2025-11-13 10:20:58
+                <strong>Validation profile:</strong> UA1 |
+                <strong>VeraPDF version:</strong> 1.28.2 |
+                <strong>Report generated:</strong> January 28, 2026 at 08:01am
             </div>
-            
+
             <div class="stats-grid">
                 <div class="stat-card passed">
                     <div class="stat-number">95</div>
                     <div class="stat-label">Passed Rules</div>
                 </div>
-                <div class="stat-card passed">
-                    <div class="stat-number">591</div>
-                    <div class="stat-label">Passed Checks</div>
-                </div>
                 <div class="stat-card failed">
                     <div class="stat-number">11</div>
                     <div class="stat-label">Failed Rules</div>
                 </div>
-                <div class="stat-card failed">
-                    <div class="stat-number">195</div>
-                    <div class="stat-label">Failed Checks</div>
-                </div>
             </div>
+
             
-            
-            <br>
+    <br>
+    <h2 class="section-title">Issues Requiring Attention</h2>
+    <br>
 
-            <h2 class="section-title">Issues requiring attention</h2>
-            
-            <table class="issues-table">
-                <thead>
-                    <tr>
-                        <th>Specification</th>
-                        <th>Clause</th>
-                        <th>Description</th>
-                        <th>Failed Checks</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="issue-row">
-                        <td class="spec-cell">ISO 14289-1:2014</td>
-                        <td class="clause-cell">7.18.5</td>
-                        <td class="desc-cell">Links shall contain an alternate description via their Contents key as described in ISO 32000-1:2008, 14.9.3</td>
-                        <td class="count-cell">12</td>
-                    </tr>
-
-                    <tr class="issue-row">
-                        <td class="spec-cell">ISO 14289-1:2014</td>
-                        <td class="clause-cell">7.18.3</td>
-                        <td class="desc-cell">Every page on which there is an annotation shall contain in its page dictionary the key Tabs, and its value shall be S</td>
-                        <td class="count-cell">1</td>
-                    </tr>
-
-                    <tr class="issue-row">
-                        <td class="spec-cell">ISO 14289-1:2014</td>
-                        <td class="clause-cell">7.1</td>
-                        <td class="desc-cell">Content shall be marked as Artifact or tagged as real content</td>
-                        <td class="count-cell">71</td>
-                    </tr>
-
-                    <tr class="issue-row">
-                        <td class="spec-cell">ISO 14289-1:2014</td>
-                        <td class="clause-cell">7.1</td>
-                        <td class="desc-cell">The document catalog dictionary shall include a ViewerPreferences dictionary containing a DisplayDocTitle key, whose value shall be true</td>
-                        <td class="count-cell">1</td>
-                    </tr>
-
-                    <tr class="issue-row">
-                        <td class="spec-cell">ISO 14289-1:2014</td>
-                        <td class="clause-cell">7.1</td>
-                        <td class="desc-cell">The logical structure of the conforming file shall be described by a structure hierarchy rooted in the StructTreeRoot entry of the document catalog dictionary, as described in ISO 32000-1:2008, 14.7</td>
-                        <td class="count-cell">1</td>
-                    </tr>
-
-                    <tr class="issue-row">
-                        <td class="spec-cell">ISO 14289-1:2014</td>
-                        <td class="clause-cell">7.2</td>
-                        <td class="desc-cell">Natural language for text in page content shall be determined</td>
-                        <td class="count-cell">71</td>
-                    </tr>
-
-                    <tr class="issue-row">
-                        <td class="spec-cell">ISO 14289-1:2014</td>
-                        <td class="clause-cell">7.18.1</td>
-                        <td class="desc-cell">An annotation (except Widget annotations or hidden annotations, or those having rectangle outside the crop-box) shall have either Contents key or an Alt entry in the enclosing structure element</td>
-                        <td class="count-cell">12</td>
-                    </tr>
-
-                    <tr class="issue-row">
-                        <td class="spec-cell">ISO 14289-1:2014</td>
-                        <td class="clause-cell">6.2</td>
-                        <td class="desc-cell">The document catalog dictionary shall include a MarkInfo dictionary containing an entry, Marked, whose value shall be true</td>
-                        <td class="count-cell">1</td>
-                    </tr>
-
-                    <tr class="issue-row">
-                        <td class="spec-cell">ISO 14289-1:2014</td>
-                        <td class="clause-cell">7.2</td>
-                        <td class="desc-cell">Natural language in the Outline entries shall be determined</td>
-                        <td class="count-cell">12</td>
-                    </tr>
-
-                    <tr class="issue-row">
-                        <td class="spec-cell">ISO 14289-1:2014</td>
-                        <td class="clause-cell">7.18.5</td>
-                        <td class="desc-cell">Links shall be tagged according to ISO 32000-1:2008, 14.8.4.4.2, Link Element</td>
-                        <td class="count-cell">12</td>
-                    </tr>
-
-                    <tr class="issue-row">
-                        <td class="spec-cell">ISO 14289-1:2014</td>
-                        <td class="clause-cell">7.1</td>
-                        <td class="desc-cell">The Catalog dictionary of a conforming file shall contain the Metadata key whose value is a metadata stream as defined in ISO 32000-1:2008, 14.3.2. The metadata stream dictionary shall contain entry Type with value /Metadata and entry Subtype with value /XML</td>
-                        <td class="count-cell">1</td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="issue-cards-container"><div class="issue-card"><div class="issue-card-header"><div class="issue-card-label"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>Issue</div><div class="issue-card-message">This hyperlink is missing descriptive text explaining where it leads. Without a description, screen readers can only announce that a link exists but can't tell users with disabilities what will happen when they click it, making navigation confusing and potentially frustrating.</div></div><div class="issue-card-body"><div class="issue-card-label"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>Fix</div><div class="issue-card-fix">Ensure all links use descriptive link text rather than generic phrases like "click here" or bare URLs. Use Markdown link syntax with meaningful descriptions: `[descriptive text explaining destination](URL)`. The link text itself should clearly indicate where the link goes or what action it performs, so screen reader users understand the link's purpose before activating it.</div></div><div class="issue-card-footer"><button class="more-info-btn" data-rule-id="ISO_14289_1-7.18.5.2" data-explanation="This hyperlink is missing descriptive text explaining where it leads. Without a description, screen readers can only announce that a link exists but can't tell users with disabilities what will happen when they click it, making navigation confusing and potentially frustrating." data-iso="14289-1:2014" data-clause="7.18.5" data-verapdf="Links shall contain an alternate description via their Contents key as described in ISO 32000-1:2008, 14.9.3">More info <span class="arrow">&rarr;</span></button></div></div>
+<div class="issue-card"><div class="issue-card-header"><div class="issue-card-label"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>Issue</div><div class="issue-card-message">A page containing annotations doesn't have the correct tab order setting. Without proper tab order, keyboard users and people using assistive technologies won't be able to navigate through annotations in a logical sequence, making it difficult to access comments, form fields, or other interactive elements on the page.</div></div><div class="issue-card-body"><div class="issue-card-label"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>Fix</div><div class="issue-card-fix">This is a page-level tab order setting that must be configured during PDF generation. Standard Quarto documents shouldn't contain annotations that require tab ordering—if annotations are present from custom code or extensions, this setting needs to be handled by the PDF engine. For most users, avoid creating PDF annotations and use standard document content instead, which will have proper structure without requiring special tab order configuration.</div></div><div class="issue-card-footer"><button class="more-info-btn" data-rule-id="ISO_14289_1-7.18.3.1" data-explanation="A page containing annotations doesn't have the correct tab order setting. Without proper tab order, keyboard users and people using assistive technologies won't be able to navigate through annotations in a logical sequence, making it difficult to access comments, form fields, or other interactive elements on the page." data-iso="14289-1:2014" data-clause="7.18.3" data-verapdf="Every page on which there is an annotation shall contain in its page dictionary the key Tabs, and its value shall be S">More info <span class="arrow">&rarr;</span></button></div></div>
+<div class="issue-card"><div class="issue-card-header"><div class="issue-card-label"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>Issue</div><div class="issue-card-message">This PDF contains content that isn't labeled as either meaningful information or decorative background. Without proper labeling, assistive technologies can't determine whether to present this content to users with disabilities, potentially causing them to miss important information or hear confusing, out-of-context fragments.</div></div><div class="issue-card-body"><div class="issue-card-label"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>Fix</div><div class="issue-card-fix">Ensure all content in your Quarto document is either part of the standard document structure (headings, paragraphs, lists, images, tables) or explicitly marked as decorative. Avoid using raw PDF commands or low-level formatting that bypasses Quarto's content structure. If you have custom content blocks or advanced layouts, this issue may require configuring your PDF engine to properly tag all document elements.</div></div><div class="issue-card-footer"><button class="more-info-btn" data-rule-id="ISO_14289_1-7.1.3" data-explanation="This PDF contains content that isn't labeled as either meaningful information or decorative background. Without proper labeling, assistive technologies can't determine whether to present this content to users with disabilities, potentially causing them to miss important information or hear confusing, out-of-context fragments." data-iso="14289-1:2014" data-clause="7.1" data-verapdf="Content shall be marked as Artifact or tagged as real content">More info <span class="arrow">&rarr;</span></button></div></div>
+<div class="issue-card"><div class="issue-card-header"><div class="issue-card-label"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>Issue</div><div class="issue-card-message">This PDF isn't configured to display its title in the window or tab bar, showing the filename instead. This makes it harder for users with disabilities to identify and switch between open documents, especially when using screen readers that announce window titles for navigation.</div></div><div class="issue-card-body"><div class="issue-card-label"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>Fix</div><div class="issue-card-fix">This setting controls how PDF viewers display the document and requires PDF engine configuration to set the DisplayDocTitle viewer preference to true. While you should ensure your document has a `title` in the YAML front matter, enabling this viewer preference typically requires additional PDF engine-specific settings that tell the PDF to prefer showing the title over the filename in viewer applications.</div></div><div class="issue-card-footer"><button class="more-info-btn" data-rule-id="ISO_14289_1-7.1.10" data-explanation="This PDF isn't configured to display its title in the window or tab bar, showing the filename instead. This makes it harder for users with disabilities to identify and switch between open documents, especially when using screen readers that announce window titles for navigation." data-iso="14289-1:2014" data-clause="7.1" data-verapdf="The document catalog dictionary shall include a ViewerPreferences dictionary containing a DisplayDocTitle key, whose value shall be true">More info <span class="arrow">&rarr;</span></button></div></div>
+<div class="issue-card"><div class="issue-card-header"><div class="issue-card-label"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>Issue</div><div class="issue-card-message">This PDF is missing the organizational framework that defines how its content is structured (like headings, paragraphs, lists, and tables). Without this structure, screen readers can only read the document as unorganized text in visual order, making it nearly impossible for users with visual impairments to navigate or understand the content properly.</div></div><div class="issue-card-body"><div class="issue-card-label"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>Fix</div><div class="issue-card-fix">Enable tagged PDF output in your Quarto configuration by adding PDF engine options that create a structured document tree. This typically involves setting accessibility or tagging flags in your YAML front matter's `pdf-engine-opt` or format-specific options. If Quarto doesn't provide a direct option for your PDF engine, you'll need to configure the PDF engine's settings to enable full document tagging and structure tree generation.</div></div><div class="issue-card-footer"><button class="more-info-btn" data-rule-id="ISO_14289_1-7.1.11" data-explanation="This PDF is missing the organizational framework that defines how its content is structured (like headings, paragraphs, lists, and tables). Without this structure, screen readers can only read the document as unorganized text in visual order, making it nearly impossible for users with visual impairments to navigate or understand the content properly." data-iso="14289-1:2014" data-clause="7.1" data-verapdf="The logical structure of the conforming file shall be described by a structure hierarchy rooted in the StructTreeRoot entry of the document catalog dictionary, as described in ISO 32000-1:2008, 14.7">More info <span class="arrow">&rarr;</span></button></div></div>
+<div class="issue-card"><div class="issue-card-header"><div class="issue-card-label"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>Issue</div><div class="issue-card-message">Some text in this document doesn't specify what language it's written in. Without language information, screen readers can't apply the correct pronunciation rules, potentially reading the text with incorrect sounds and accents that make it unintelligible to users with visual impairments.</div></div><div class="issue-card-body"><div class="issue-card-label"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>Fix</div><div class="issue-card-fix">Add a `lang` field to your Quarto YAML front matter to specify the document's primary language (e.g., `lang: en` for English). If your document contains text in multiple languages, wrap sections in different languages using spans or divs with the appropriate `lang` attribute (e.g., `[texto en español]{lang="es"}` for inline text or fenced divs with `::: {lang="fr"}` for blocks).</div></div><div class="issue-card-footer"><button class="more-info-btn" data-rule-id="ISO_14289_1-7.2.34" data-explanation="Some text in this document doesn't specify what language it's written in. Without language information, screen readers can't apply the correct pronunciation rules, potentially reading the text with incorrect sounds and accents that make it unintelligible to users with visual impairments." data-iso="14289-1:2014" data-clause="7.2" data-verapdf="Natural language for text in page content shall be determined">More info <span class="arrow">&rarr;</span></button></div></div>
+<div class="issue-card"><div class="issue-card-header"><div class="issue-card-label"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>Issue</div><div class="issue-card-message">A visible annotation is missing both its descriptive content and alternative text. Without either description, screen readers can only tell users with disabilities that an annotation exists but can't explain what it says or represents, making the annotation's information completely inaccessible.</div></div><div class="issue-card-body"><div class="issue-card-label"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>Fix</div><div class="issue-card-fix">Standard Quarto documents don't create PDF annotations by default—if annotations are present, they're likely from custom extensions or post-processing. If you're using custom code that generates annotations, ensure each annotation includes descriptive text content. For most users, avoid creating PDF annotations and instead use standard Quarto content elements like callout blocks, asides, or footnotes to add supplemental information in an accessible way.</div></div><div class="issue-card-footer"><button class="more-info-btn" data-rule-id="ISO_14289_1-7.18.1.2" data-explanation="A visible annotation is missing both its descriptive content and alternative text. Without either description, screen readers can only tell users with disabilities that an annotation exists but can't explain what it says or represents, making the annotation's information completely inaccessible." data-iso="14289-1:2014" data-clause="7.18.1" data-verapdf="An annotation (except Widget annotations or hidden annotations, or those having rectangle outside the crop-box) shall have either Contents key or an Alt entry in the enclosing structure element">More info <span class="arrow">&rarr;</span></button></div></div>
+<div class="issue-card"><div class="issue-card-header"><div class="issue-card-label"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>Issue</div><div class="issue-card-message">This PDF is missing essential markers that tell assistive technologies how the content is structured (like headings, paragraphs, and lists). Without these markers, screen readers and other accessibility tools can't properly navigate or read the document aloud, making it extremely difficult for people with visual impairments to use.</div></div><div class="issue-card-body"><div class="issue-card-label"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>Fix</div><div class="issue-card-fix">Add `pdf-engine-opt` settings to your Quarto YAML front matter to enable tagged PDF output, which creates the structural markers needed for accessibility. The specific option varies by engine—for LaTeX-based engines, this typically involves enabling tagged PDF mode, while Typst may require accessibility flags. If Quarto doesn't provide a direct option, you may need to add engine-specific configuration to enable PDF tagging in your PDF engine's settings.</div></div><div class="issue-card-footer"><button class="more-info-btn" data-rule-id="ISO_14289_1-6.2.1" data-explanation="This PDF is missing essential markers that tell assistive technologies how the content is structured (like headings, paragraphs, and lists). Without these markers, screen readers and other accessibility tools can't properly navigate or read the document aloud, making it extremely difficult for people with visual impairments to use." data-iso="14289-1:2014" data-clause="6.2" data-verapdf="The document catalog dictionary shall include a MarkInfo dictionary containing an entry, Marked, whose value shall be true">More info <span class="arrow">&rarr;</span></button></div></div>
+<div class="issue-card"><div class="issue-card-header"><div class="issue-card-label"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>Issue</div><div class="issue-card-message">The bookmarks in this PDF don't specify what language they're written in. Without language information, screen readers may pronounce the bookmark text incorrectly or use the wrong pronunciation rules, making navigation confusing or unintelligible for users with visual impairments.</div></div><div class="issue-card-body"><div class="issue-card-label"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>Fix</div><div class="issue-card-fix">Add a `lang` field to your Quarto YAML front matter specifying the document language (e.g., `lang: en` for English, `lang: es` for Spanish). This setting should propagate to all document elements including bookmarks, ensuring screen readers use the correct pronunciation rules throughout the PDF including the table of contents and navigation elements.</div></div><div class="issue-card-footer"><button class="more-info-btn" data-rule-id="ISO_14289_1-7.2.2" data-explanation="The bookmarks in this PDF don't specify what language they're written in. Without language information, screen readers may pronounce the bookmark text incorrectly or use the wrong pronunciation rules, making navigation confusing or unintelligible for users with visual impairments." data-iso="14289-1:2014" data-clause="7.2" data-verapdf="Natural language in the Outline entries shall be determined">More info <span class="arrow">&rarr;</span></button></div></div>
+<div class="issue-card"><div class="issue-card-header"><div class="issue-card-label"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>Issue</div><div class="issue-card-message">A hyperlink is incorrectly labeled as decorative or placed in the wrong structural container. This misplacement prevents screen readers from identifying it as a clickable link, making it impossible for users with disabilities to navigate to the linked content or even know that a link exists.</div></div><div class="issue-card-body"><div class="issue-card-label"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>Fix</div><div class="issue-card-fix">Ensure all links in your document use standard Markdown link syntax (`[link text](URL)`) rather than creating links through custom HTML, raw PDF commands, or other non-standard methods. Review any custom templates, filters, or extensions you're using to verify they don't place links in decorative sections or improper structural containers—links should always be part of the main content structure, not treated as artifacts.</div></div><div class="issue-card-footer"><button class="more-info-btn" data-rule-id="ISO_14289_1-7.18.5.1" data-explanation="A hyperlink is incorrectly labeled as decorative or placed in the wrong structural container. This misplacement prevents screen readers from identifying it as a clickable link, making it impossible for users with disabilities to navigate to the linked content or even know that a link exists." data-iso="14289-1:2014" data-clause="7.18.5" data-verapdf="Links shall be tagged according to ISO 32000-1:2008, 14.8.4.4.2, Link Element">More info <span class="arrow">&rarr;</span></button></div></div>
+<div class="issue-card"><div class="issue-card-header"><div class="issue-card-label"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>Issue</div><div class="issue-card-message">This PDF is missing essential information about the document itself (like title, author, and accessibility features) or this information isn't stored in the correct format. Without proper metadata, assistive technologies can't provide users with disabilities important context about the document before they begin reading it.</div></div><div class="issue-card-body"><div class="issue-card-label"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>Fix</div><div class="issue-card-fix">Add document metadata to your Quarto YAML front matter including `title`, `author`, `date`, and `lang` fields. Ensure your PDF engine is configured to embed this metadata in XMP format by enabling metadata options in your YAML (this may require accessibility-related PDF engine settings). If metadata still doesn't appear correctly, you may need to update your PDF engine version or adjust engine-specific metadata configuration.</div></div><div class="issue-card-footer"><button class="more-info-btn" data-rule-id="ISO_14289_1-7.1.8" data-explanation="This PDF is missing essential information about the document itself (like title, author, and accessibility features) or this information isn't stored in the correct format. Without proper metadata, assistive technologies can't provide users with disabilities important context about the document before they begin reading it." data-iso="14289-1:2014" data-clause="7.1" data-verapdf="The Catalog dictionary of a conforming file shall contain the Metadata key whose value is a metadata stream as defined in ISO 32000-1:2008, 14.3.2. The metadata stream dictionary shall contain entry Type with value /Metadata and entry Subtype with value /XML">More info <span class="arrow">&rarr;</span></button></div></div></div>
         </div>
-        
+
         <div class="footer">
-            Generated by <a href="https://github.com/rfortherestofus/checkpdf/" target="_blank"><code>{checkpdf}</code></a> | <a href="https://rfortherestofus.com/" target="_blank">R for the Rest of Us</a>
+            Generated by <a href="https://pdfcheck.org" target="_blank"><code>pdfcheck</code></a> | <a href="https://rfortherestofus.com/" target="_blank">R for the Rest of Us</a>
         </div>
     </div>
+
+    <!-- Details Modal -->
+    <div id="details-modal" class="modal-overlay" onclick="if(event.target === this) closeModal()">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Technical Details</h3>
+                <button class="modal-close" onclick="closeModal()" aria-label="Close modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p class="modal-intro">The following technical details reference the PDF/UA standard and veraPDF validation rules. This information is intended for developers and accessibility specialists.</p>
+                <p><strong>Rule ID:</strong> <span id="modal-rule-id"></span></p>
+                <p><strong>Explanation:</strong> <span id="modal-explanation"></span></p>
+                <p><strong>ISO:</strong> <span id="modal-iso"></span></p>
+                <p><strong>Clause:</strong> <span id="modal-clause"></span></p>
+                <p><strong>veraPDF Issue:</strong> <span id="modal-verapdf"></span></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    function closeModal() {
+      document.getElementById("details-modal").classList.remove("active");
+    }
+
+    document.addEventListener("click", function(e) {
+      const btn = e.target.closest(".more-info-btn");
+      if (btn) {
+        document.getElementById("modal-rule-id").textContent = btn.dataset.ruleId || "";
+        document.getElementById("modal-explanation").textContent = btn.dataset.explanation || "";
+        document.getElementById("modal-iso").textContent = btn.dataset.iso || "";
+        document.getElementById("modal-clause").textContent = btn.dataset.clause || "";
+        document.getElementById("modal-verapdf").textContent = btn.dataset.verapdf || "";
+        document.getElementById("details-modal").classList.add("active");
+      }
+    });
+
+    document.addEventListener("keydown", function(e) {
+      if (e.key === "Escape") closeModal();
+    });
+  </script>
 </body>
 </html>
