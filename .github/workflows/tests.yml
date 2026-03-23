@@ -34,7 +34,8 @@ jobs:
           Sys.info()
           devtools::load_all()
           pandoc::pandoc_install()
-          install_verapdf()
-          cat("Sys.which('verapdf'): '", Sys.which("verapdf"), "'", sep="")
+          bin <- install_verapdf()
+          cat("veraPDF bin: ", bin, "\n", sep = "")
+          cat("Sys.which('verapdf'): '", Sys.which("verapdf"), "'\n", sep = "")
           testthat::test_dir("tests/testthat", stop_on_failure = TRUE)
         shell: Rscript {0}

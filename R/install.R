@@ -15,7 +15,7 @@ install_verapdf <- function() {
     os %in% c("Darwin", "Linux")
   }
 
-  append_verapdf_to_rprofile <- function(found_bin) {
+  append_verapdf_to_rprofile <- function() {
     rprofile <- path.expand("~/.Rprofile")
 
     block <- c(
@@ -47,6 +47,43 @@ install_verapdf <- function() {
     invisible(TRUE)
   }
 
+  find_verapdf_bin <- function(install_path, executable_name) {
+    candidates <- c(
+      install_path,
+      file.path(install_path, "bin")
+    )
+
+    for (path in candidates) {
+      exe <- file.path(path, executable_name)
+      if (file.exists(exe)) {
+        return(normalizePath(path, winslash = "\\", mustWork = TRUE))
+      }
+    }
+
+    nested <- list.files(
+      install_path,
+      pattern = paste0("^", gsub("\\.", "\\\\.", executable_name), "$"),
+      recursive = TRUE,
+      full.names = TRUE,
+      ignore.case = TRUE,
+      all.files = FALSE,
+      no.. = TRUE
+    )
+
+    if (length(nested) > 0) {
+      nested <- nested[file.info(nested)$isdir %in% FALSE]
+      if (length(nested) > 0) {
+        return(dirname(normalizePath(
+          nested[[1]],
+          winslash = "\\",
+          mustWork = TRUE
+        )))
+      }
+    }
+
+    NULL
+  }
+
   script_install <- if (is_unix()) "verapdf-install" else "verapdf-install.bat"
 
   verapdf_installer <- system.file(
@@ -63,7 +100,6 @@ install_verapdf <- function() {
     package = "pdfcheck"
   )
 
-  # Use consistent path separators for Windows [5, 6]
   install_path <- if (is_unix()) {
     file.path(Sys.getenv("HOME"), "verapdf")
   } else {
@@ -102,22 +138,26 @@ install_verapdf <- function() {
     stop("veraPDF installer failed with exit status: ", result)
   }
 
-  possible_bins <- c(install_path, file.path(install_path, "bin"))
   executable_name <- if (is_unix()) "verapdf" else "verapdf.bat"
-
-  found_bin <- NULL
-  for (path in possible_bins) {
-    if (file.exists(file.path(path, executable_name))) {
-      found_bin <- path
-      break
-    }
-  }
+  found_bin <- find_verapdf_bin(install_path, executable_name)
 
   if (is.null(found_bin)) {
-    stop(
-      "Installation finished, but verapdf executable was not found in root or bin folder."
+    contents <- tryCatch(
+      list.files(install_path, recursive = TRUE, full.names = TRUE),
+      error = function(...) character()
     )
-    message("Persistent variable VERAPDF_BIN created to avoid PATH truncation.")
+
+    stop(
+      paste0(
+        "Installation finished, but ",
+        executable_name,
+        " was not found under: ",
+        install_path,
+        "\n",
+        "Discovered files:\n",
+        paste(utils::head(contents, 50), collapse = "\n")
+      )
+    )
   }
 
   sep <- if (is_unix()) ":" else ";"
@@ -132,7 +172,7 @@ install_verapdf <- function() {
       system2("setx", args = c("VERAPDF_BIN", shQuote(found_bin))),
       silent = TRUE
     )
-    append_verapdf_to_rprofile(found_bin)
+    append_verapdf_to_rprofile()
     message("Persistent variable VERAPDF_BIN created.")
     message(
       "Updated ~/.Rprofile so future R sessions prepend VERAPDF_BIN to PATH."
