@@ -4,11 +4,47 @@
 #' Robust utility to install veraPDF. Handles Windows path limits and
 #' version-specific directory structures.
 #'
+#' On Windows, this function persists the installation directory in the
+#' VERAPDF_BIN environment variable and updates ~/.Rprofile so future R
+#' sessions prepend that directory to PATH.
+#'
 #' @export
 install_verapdf <- function() {
   is_unix <- function() {
-    os <- Sys.info()["sysname"]
-    return(os %in% c("Darwin", "Linux"))
+    os <- Sys.info()[["sysname"]]
+    os %in% c("Darwin", "Linux")
+  }
+
+  append_verapdf_to_rprofile <- function(found_bin) {
+    rprofile <- path.expand("~/.Rprofile")
+
+    block <- c(
+      "",
+      "# pdfcheck veraPDF startup hook",
+      "local({",
+      "  verapdf_bin <- Sys.getenv(\"VERAPDF_BIN\", \"\")",
+      "  if (nzchar(verapdf_bin) && dir.exists(verapdf_bin)) {",
+      "    sep <- if (.Platform$OS.type == \"windows\") \";\" else \":\"",
+      "    current_path <- Sys.getenv(\"PATH\")",
+      "    path_entries <- strsplit(current_path, split = sep, fixed = TRUE)[[1]]",
+      "    if (!(verapdf_bin %in% path_entries)) {",
+      "      Sys.setenv(PATH = paste(verapdf_bin, current_path, sep = sep))",
+      "    }",
+      "  }",
+      "})"
+    )
+
+    if (file.exists(rprofile)) {
+      existing <- readLines(rprofile, warn = FALSE)
+      if (any(grepl("^# pdfcheck veraPDF startup hook$", existing))) {
+        return(invisible(FALSE))
+      }
+      writeLines(c(existing, block), rprofile)
+      return(invisible(TRUE))
+    }
+
+    writeLines(block, rprofile)
+    invisible(TRUE)
   }
 
   script_install <- if (is_unix()) "verapdf-install" else "verapdf-install.bat"
@@ -27,11 +63,9 @@ install_verapdf <- function() {
     package = "pdfcheck"
   )
 
-  # Use consistent path separators for Windows [5, 6]
   install_path <- if (is_unix()) {
     file.path(Sys.getenv("HOME"), "verapdf")
   } else {
-    # Normalize to backslashes for the Windows installer [7]
     normalizePath(
       file.path(Sys.getenv("USERPROFILE"), "verapdf"),
       winslash = "\\",
@@ -39,15 +73,16 @@ install_verapdf <- function() {
     )
   }
 
-  if (!is_unix() && !dir.exists(install_path)) {
+  if (!dir.exists(install_path)) {
     dir.create(install_path, recursive = TRUE, showWarnings = FALSE)
   }
 
   message("Installing veraPDF at: ", install_path)
 
   tmp_config <- tempfile(fileext = ".xml")
-  xml_content <- readLines(config_installation)
-  # Ensure the XML contains the correctly formatted path [7, 8]
+  on.exit(unlink(tmp_config, force = TRUE), add = TRUE)
+
+  xml_content <- readLines(config_installation, warn = FALSE)
   xml_content <- gsub(
     "<installpath>.*</installpath>",
     glue::glue("<installpath>{install_path}</installpath>"),
@@ -55,11 +90,17 @@ install_verapdf <- function() {
   )
   writeLines(xml_content, tmp_config)
 
-  # Execute installer [9, 1]
-  system2(command = verapdf_installer, args = shQuote(tmp_config))
+  result <- system2(
+    command = verapdf_installer,
+    args = shQuote(tmp_config),
+    stdout = "",
+    stderr = ""
+  )
 
-  # Post-install: Detect executable location
-  # Check root first, then bin
+  if (!identical(result, 0L)) {
+    stop("veraPDF installer failed with exit status: ", result)
+  }
+
   possible_bins <- c(install_path, file.path(install_path, "bin"))
   executable_name <- if (is_unix()) "verapdf" else "verapdf.bat"
 
@@ -77,24 +118,30 @@ install_verapdf <- function() {
     )
   }
 
-  # Update R session PATH
   sep <- if (is_unix()) ":" else ";"
-  Sys.setenv(PATH = paste(found_bin, Sys.getenv("PATH"), sep = sep))
+  current_path <- Sys.getenv("PATH")
+  path_entries <- strsplit(current_path, split = sep, fixed = TRUE)[[1]]
+  if (!(found_bin %in% path_entries)) {
+    Sys.setenv(PATH = paste(found_bin, current_path, sep = sep))
+  }
 
-  # Update Windows User PATH safely
-  # Avoiding %PATH% recursion prevents the 1024-character truncation error
   if (!is_unix()) {
-    # Using 'set' without appending the existing path is safer for session
-    # but for persistence, it is better to add only the new entry to the Registry
-    # or use a simplified setx if you only want to track this specific tool.
     try(
       system2("setx", args = c("VERAPDF_BIN", shQuote(found_bin))),
       silent = TRUE
     )
-    message("Persistent variable VERAPDF_BIN created to avoid PATH truncation.")
+    append_verapdf_to_rprofile(found_bin)
+    message("Persistent variable VERAPDF_BIN created.")
+    message(
+      "Updated ~/.Rprofile so future R sessions prepend VERAPDF_BIN to PATH."
+    )
+    message(
+      "Restart R to make verapdf available automatically via Sys.which()."
+    )
   }
 
   message("veraPDF installed successfully.")
-  # Sys.which will now find it [3]
   print(Sys.which("verapdf"))
+
+  invisible(found_bin)
 }
