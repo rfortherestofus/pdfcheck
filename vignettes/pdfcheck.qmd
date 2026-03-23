@@ -1,17 +1,8 @@
 ---
-title: Check your PDF accessibility
-vignette: >
-  %\VignetteIndexEntry{check-you-pdf-app}
-  %\VignetteEngine{quarto::html}
-  %\VignetteEncoding{UTF-8}
-knitr:
-  opts_chunk:
-    collapse: true
-    comment: '#>'
-    message: false
+title: App
 ---
 
-This page lets a user upload a PDF, send it to the accessibility API, and open the returned HTML report in a new browser tab.
+This page lets you upload a PDF, send it to the accessibility API, and open the returned HTML report in a new browser tab.
 
 ```{=html}
 <style>
@@ -203,7 +194,7 @@ This page lets a user upload a PDF, send it to the accessibility API, and open t
       <label class="pdfcheck-upload" for="pdfcheck-file-input">Choose PDF</label>
       <button id="pdfcheck-submit" class="pdfcheck-button" type="submit">
         <span id="pdfcheck-submit-spinner" class="pdfcheck-spinner" hidden></span>
-        <span id="pdfcheck-submit-label">Send to API</span>
+        <span id="pdfcheck-submit-label">Check accessibility</span>
       </button>
       <a
         id="pdfcheck-download"

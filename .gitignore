@@ -18,3 +18,4 @@ inst/doc
 test.R
 User*
 *.md
+!pkgdown/index.md
