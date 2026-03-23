@@ -28,4 +28,5 @@ Imports:
     htmlwidgets,
     jsonlite,
     tibble,
-    utils
+    utils,
+    xml2
