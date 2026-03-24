@@ -53,13 +53,12 @@ verapdf <- function(
 
   out_cli <- suppressWarnings(system2(cmd, args, stdout = TRUE))
 
+  if (!is.null(write_to)) {
+    writeLines(out_cli, write_to)
+  }
+
   # parse CLI output
   out <- jsonlite::fromJSON(paste(out_cli, collapse = "\n"))
-
-  # optionnaly write to file
-  if (!is.null(write_to)) {
-    jsonlite::write_json(out, write_to, auto_unbox = TRUE, pretty = TRUE)
-  }
 
   out <- structure(out, class = "verapdf")
 
