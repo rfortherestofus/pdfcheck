@@ -8,12 +8,15 @@ that aims to make checking the accessibility of PDF files as easy as
 possible. It relies on
 [verapdf](https://github.com/veraPDF/veraPDF-library) (which does all
 the hard work in the background) and uses it to provide detailed reports
-on issues found in your PDF files.
+on issues found in your PDF files. PDF accessibility ensures that
+everyone, including people with disabilities, can access and understand
+the content of a PDF.
 
-> \[!NOTE\] PDF accessibility ensures that everyone, including people
-> with disabilities, can access and understand the content of a PDF.
+## Get an Accessibility Report by Uploading a PDF
 
-  
+If you prefer to upload a PDF to get an accessibility report, please
+visit [the Upload PDF
+page](https://rfortherestofus.github.io/pdfcheck/articles/pdfcheck.md).
 
 ## Installation
 
@@ -21,8 +24,6 @@ on issues found in your PDF files.
 # install.packages("pak")
 pak::pkg_install("rfortherestofus/pdfcheck")
 ```
-
-  
 
 ## Usage
 
@@ -35,9 +36,7 @@ pdfcheck::install_verapdf()
 > \*Should only do once and is **not** necessary if you already have the
 > verapdf cli on PATH
 
-  
-
-- Check that a PDF is PDF/UA-1 compliant:
+### Check that a PDF is PDF/UA-1 compliant:
 
 ``` r
 pdfcheck::is_pdf_compliant("report.pdf")
@@ -53,9 +52,7 @@ It works with many standards: `profile` can be any of `ua1`, `ua2`,
 is `ua1`. You can find their meaning
 [here](https://docs.verapdf.org/cli/validation/#list-profiles).
 
-  
-
-- Generate an HTML accessibility report:
+### Generate an HTML accessibility report:
 
 ``` r
 # Basic usage: this opens your browser
@@ -83,9 +80,7 @@ pdfcheck::accessibility_report(
 )
 ```
 
-  
-
-- Print an accessibility summary
+### Print an accessibility summary
 
 ``` r
 pdfcheck::accessibility_summary("report.pdf")
@@ -110,9 +105,7 @@ pdfcheck::accessibility_summary("report.pdf")
 > **a rule is a single issue, while a check corresponds to the number of
 > times a rule has been failed**.
 
-  
-
-- Get information and stats
+### Get information and stats
 
 ``` r
 pdfcheck::verapdf(pdf_file) |>
@@ -127,8 +120,6 @@ pdfcheck::verapdf(pdf_file) |>
   pdfcheck::get_verapdf_version()
 #> "1.28.2"
 ```
-
-  
 
 ## Licenses
 

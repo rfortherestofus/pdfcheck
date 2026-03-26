@@ -1,6 +1,11 @@
 # Articles
 
-### Accessibility Guides
+### How to Use {pdfcheck} Without Using R
+
+- [Upload
+  PDF](https://rfortherestofus.github.io/pdfcheck/articles/pdfcheck.md):
+
+### General Accessibility Guides
 
 - [What is PDF
   accessibility?](https://rfortherestofus.github.io/pdfcheck/articles/what-is-pdf-accessibility.md):

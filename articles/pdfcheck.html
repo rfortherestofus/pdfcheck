@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>App • pdfcheck</title>
+<title>Upload PDF • pdfcheck</title>
 <script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
@@ -13,7 +13,7 @@
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><script src="pdfcheck_files/libs/quarto-html/popper.min.js"></script><script src="pdfcheck_files/libs/quarto-html/tippy.umd.min.js"></script><link href="pdfcheck_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="pdfcheck_files/libs/quarto-html/light-border.css" rel="stylesheet">
 <!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
-<meta property="og:title" content="App">
+<meta property="og:title" content="Upload PDF">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -32,7 +32,7 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
-<li class="active nav-item"><a class="nav-link" href="../articles/pdfcheck.html">Get started</a></li>
+<li class="active nav-item"><a class="nav-link" href="../articles/pdfcheck.html">Upload PDF</a></li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item"><a class="nav-link" href="../articles/index.html">Articles</a></li>
       </ul>
@@ -58,7 +58,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
 
-      <h1>App</h1>
+      <h1>Upload PDF</h1>
 
 
 
@@ -72,7 +72,7 @@
 
 
 
-    <p>This page lets you upload a PDF, send it to the accessibility API, and open the returned HTML report in a new browser tab.</p>
+    <p>This page lets you upload a PDF and get an accessibility report without using R.</p>
 <style>
 .pdfcheck-app {
   margin: 1.5rem 0 2rem;
@@ -251,13 +251,13 @@
     <input id="pdfcheck-file-input" class="pdfcheck-input" type="file" accept=".pdf,application/pdf"><div id="pdfcheck-file" class="pdfcheck-file" aria-live="polite"></div>
 
     <div class="pdfcheck-actions">
-      <label class="pdfcheck-upload" for="pdfcheck-file-input">Choose PDF</label>
+      <label class="pdfcheck-upload" for="pdfcheck-file-input">Upload PDF</label>
       <button id="pdfcheck-submit" class="pdfcheck-button" type="submit">
         <span id="pdfcheck-submit-spinner" class="pdfcheck-spinner" hidden=""></span>
-        <span id="pdfcheck-submit-label">Check accessibility</span>
+        <span id="pdfcheck-submit-label">Run Accessibility Checker</span>
       </button>
       <a id="pdfcheck-download" class="pdfcheck-download" href="#" target="_blank" rel="noopener noreferrer" download="" hidden="">
-        Download HTML
+        Download Report
       </a>
     </div>
 
@@ -311,7 +311,7 @@
   const setLoading = (loading) => {
     submit.disabled = loading;
     submitSpinner.hidden = !loading;
-    submitLabel.textContent = loading ? "Waiting for report..." : "Send to API";
+    submitLabel.textContent = loading ? "Generating Report" : "Retry";
   };
 
   const validateFile = (file) => {

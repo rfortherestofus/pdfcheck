@@ -32,7 +32,7 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
-<li class="nav-item"><a class="nav-link" href="articles/pdfcheck.html">Get started</a></li>
+<li class="nav-item"><a class="nav-link" href="articles/pdfcheck.html">Upload PDF</a></li>
 <li class="nav-item"><a class="nav-link" href="reference/index.html">Reference</a></li>
 <li class="nav-item"><a class="nav-link" href="articles/index.html">Articles</a></li>
       </ul>
@@ -62,18 +62,18 @@
 </h1></div>
 </div>
 <p><img src="https://github.com/rfortherestofus/pdfcheck/blob/main/hex-sticker.png?raw=true" alt="pdfcheck R package logo" align="right" width="160px"></p>
-<p><a href="https://rfortherestofus.github.io/pdfcheck/">pdfcheck</a> is an R package that aims to make checking the accessibility of PDF files as easy as possible. It relies on <a href="https://github.com/veraPDF/veraPDF-library" class="external-link">verapdf</a> (which does all the hard work in the background) and uses it to provide detailed reports on issues found in your PDF files.</p>
-<blockquote>
-<p>[!NOTE] PDF accessibility ensures that everyone, including people with disabilities, can access and understand the content of a PDF.</p>
-</blockquote>
-<p><br></p>
+<p><a href="https://rfortherestofus.github.io/pdfcheck/">pdfcheck</a> is an R package that aims to make checking the accessibility of PDF files as easy as possible. It relies on <a href="https://github.com/veraPDF/veraPDF-library" class="external-link">verapdf</a> (which does all the hard work in the background) and uses it to provide detailed reports on issues found in your PDF files. PDF accessibility ensures that everyone, including people with disabilities, can access and understand the content of a PDF.</p>
+<div class="section level2">
+<h2 id="get-an-accessibility-report-by-uploading-a-pdf">Get an Accessibility Report by Uploading a PDF<a class="anchor" aria-label="anchor" href="#get-an-accessibility-report-by-uploading-a-pdf"></a>
+</h2>
+<p>If you prefer to upload a PDF to get an accessibility report, please visit <a href="articles/pdfcheck.html">the Upload PDF page</a>.</p>
+</div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("pak")</span></span>
 <span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pkg_install.html" class="external-link">pkg_install</a></span><span class="op">(</span><span class="st">"rfortherestofus/pdfcheck"</span><span class="op">)</span></span></code></pre></div>
-<p><br></p>
 </div>
 <div class="section level2">
 <h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
@@ -86,10 +86,9 @@
 <blockquote>
 <p>*Should only do once and is <strong>not</strong> necessary if you already have the verapdf cli on PATH</p>
 </blockquote>
-<p><br></p>
-<ul>
-<li>Check that a PDF is PDF/UA-1 compliant:</li>
-</ul>
+<div class="section level3">
+<h3 id="check-that-a-pdf-is-pdfua-1-compliant">Check that a PDF is PDF/UA-1 compliant:<a class="anchor" aria-label="anchor" href="#check-that-a-pdf-is-pdfua-1-compliant"></a>
+</h3>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">pdfcheck</span><span class="fu">::</span><span class="fu"><a href="reference/is_pdf_compliant.html">is_pdf_compliant</a></span><span class="op">(</span><span class="st">"report.pdf"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; TRUE</span></span>
@@ -98,10 +97,10 @@
 <span><span class="fu">pdfcheck</span><span class="fu">::</span><span class="fu"><a href="reference/is_pdf_compliant.html">is_pdf_compliant</a></span><span class="op">(</span><span class="st">"report.pdf"</span>, profile <span class="op">=</span> <span class="st">"ua2"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; FALSE</span></span></code></pre></div>
 <p>It works with many standards: <code>profile</code> can be any of <code>ua1</code>, <code>ua2</code>, <code>1a</code>, <code>1b</code>, <code>2a</code>, <code>2b</code>, <code>2u</code>, <code>3a</code>, <code>3b</code>, <code>3u</code>, <code>4</code>, <code>4f</code>, <code>4e</code>. Default is <code>ua1</code>. You can find their meaning <a href="https://docs.verapdf.org/cli/validation/#list-profiles" class="external-link">here</a>.</p>
-<p><br></p>
-<ul>
-<li>Generate an HTML accessibility report:</li>
-</ul>
+</div>
+<div class="section level3">
+<h3 id="generate-an-html-accessibility-report">Generate an HTML accessibility report:<a class="anchor" aria-label="anchor" href="#generate-an-html-accessibility-report"></a>
+</h3>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Basic usage: this opens your browser</span></span>
 <span><span class="fu">pdfcheck</span><span class="fu">::</span><span class="fu"><a href="reference/accessibility_report.html">accessibility_report</a></span><span class="op">(</span><span class="st">"report.pdf"</span><span class="op">)</span></span>
@@ -126,10 +125,10 @@
 <span>   open <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>   profile <span class="op">=</span> <span class="st">"ua2"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><br></p>
-<ul>
-<li>Print an accessibility summary</li>
-</ul>
+</div>
+<div class="section level3">
+<h3 id="print-an-accessibility-summary">Print an accessibility summary<a class="anchor" aria-label="anchor" href="#print-an-accessibility-summary"></a>
+</h3>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">pdfcheck</span><span class="fu">::</span><span class="fu"><a href="reference/accessibility_summary.html">accessibility_summary</a></span><span class="op">(</span><span class="st">"report.pdf"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; PDF Accessibility Summary</span></span>
@@ -145,10 +144,10 @@
 <blockquote>
 <p>It is important to understand the <strong>difference between rules and checks</strong>. A rule that has been failed may be “Missing alternative text on images”, and each rule may have several checks that have been failed. For example, if the rule “Missing alt text on images” occurs 10 times in a given PDF (e.g., 10 images do not have an alternative text), that gives us 10 failed checks for that rule. More generally, <strong>a rule is a single issue, while a check corresponds to the number of times a rule has been failed</strong>.</p>
 </blockquote>
-<p><br></p>
-<ul>
-<li>Get information and stats</li>
-</ul>
+</div>
+<div class="section level3">
+<h3 id="get-information-and-stats">Get information and stats<a class="anchor" aria-label="anchor" href="#get-information-and-stats"></a>
+</h3>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">pdfcheck</span><span class="fu">::</span><span class="fu"><a href="reference/verapdf.html">verapdf</a></span><span class="op">(</span><span class="va">pdf_file</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">pdfcheck</span><span class="fu">::</span><span class="fu"><a href="reference/info.html">get_total_failed_checks</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -161,7 +160,7 @@
 <span><span class="fu">pdfcheck</span><span class="fu">::</span><span class="fu"><a href="reference/verapdf.html">verapdf</a></span><span class="op">(</span><span class="va">pdf_file</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">pdfcheck</span><span class="fu">::</span><span class="fu"><a href="reference/info.html">get_verapdf_version</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; "1.28.2"</span></span></code></pre></div>
-<p><br></p>
+</div>
 </div>
 <div class="section level2">
 <h2 id="licenses">Licenses<a class="anchor" aria-label="anchor" href="#licenses"></a>

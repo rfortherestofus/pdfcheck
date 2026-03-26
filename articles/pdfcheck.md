@@ -1,12 +1,12 @@
-# App
+# Upload PDF
 
-This page lets you upload a PDF, send it to the accessibility API, and
-open the returned HTML report in a new browser tab.
+This page lets you upload a PDF and get an accessibility report without
+using R.
 
 PDF file
 
-Choose PDF
+Upload PDF
 
-Check accessibility
+Run Accessibility Checker
 
-[Download HTML](#)
+[Download Report](#)
