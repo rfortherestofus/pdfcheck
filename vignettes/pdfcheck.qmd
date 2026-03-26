@@ -1,8 +1,8 @@
 ---
-title: App
+title: Upload PDF
 ---
 
-This page lets you upload a PDF, send it to the accessibility API, and open the returned HTML report in a new browser tab.
+This page lets you upload a PDF and get an accessibility report without using R. 
 
 ```{=html}
 <style>
@@ -191,10 +191,10 @@ This page lets you upload a PDF, send it to the accessibility API, and open the 
     <div id="pdfcheck-file" class="pdfcheck-file" aria-live="polite"></div>
 
     <div class="pdfcheck-actions">
-      <label class="pdfcheck-upload" for="pdfcheck-file-input">Choose PDF</label>
+      <label class="pdfcheck-upload" for="pdfcheck-file-input">Upload PDF</label>
       <button id="pdfcheck-submit" class="pdfcheck-button" type="submit">
         <span id="pdfcheck-submit-spinner" class="pdfcheck-spinner" hidden></span>
-        <span id="pdfcheck-submit-label">Check accessibility</span>
+        <span id="pdfcheck-submit-label">Run Accessibility Checker</span>
       </button>
       <a
         id="pdfcheck-download"
@@ -205,7 +205,7 @@ This page lets you upload a PDF, send it to the accessibility API, and open the 
         download
         hidden
       >
-        Download HTML
+        Download Report
       </a>
     </div>
 
@@ -259,7 +259,7 @@ This page lets you upload a PDF, send it to the accessibility API, and open the 
   const setLoading = (loading) => {
     submit.disabled = loading;
     submitSpinner.hidden = !loading;
-    submitLabel.textContent = loading ? "Waiting for report..." : "Send to API";
+    submitLabel.textContent = loading ? "Generating Report" : "Retry";
   };
 
   const validateFile = (file) => {

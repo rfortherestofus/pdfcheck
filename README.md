@@ -6,12 +6,11 @@
 
 <img src="https://github.com/rfortherestofus/pdfcheck/blob/main/hex-sticker.png?raw=true" alt="pdfcheck R package logo" align="right" width="160px"/>
 
-`{pdfcheck}` is an R package that aims to make checking the accessibility of PDF files as easy as possible. It relies on [verapdf](https://github.com/veraPDF/veraPDF-library) (which does all the hard work in the background) and uses it to provide detailed reports on issues found in your PDF files.
+`{pdfcheck}` is an R package that aims to make checking the accessibility of PDF files as easy as possible. It relies on [verapdf](https://github.com/veraPDF/veraPDF-library) (which does all the hard work in the background) and uses it to provide detailed reports on issues found in your PDF files. PDF accessibility ensures that everyone, including people with disabilities, can access and understand the content of a PDF.
 
-> [!NOTE]
-> PDF accessibility ensures that everyone, including people with disabilities, can access and understand the content of a PDF.
+## Get an Accessibility Report by Uploading a PDF
 
-<br>
+If you prefer to upload a PDF to get an accessibility report, please visit [the Upload PDF page](articles/pdfcheck.html).
 
 ## Installation
 
@@ -20,7 +19,7 @@
 pak::pkg_install("rfortherestofus/pdfcheck")
 ```
 
-<br>
+
 
 ## Usage
 
@@ -32,9 +31,9 @@ pdfcheck::install_verapdf()
 
 > \*Should only do once and is **not** necessary if you already have the verapdf cli on PATH
 
-<br>
 
-- Check that a PDF is PDF/UA-1 compliant:
+
+### Check that a PDF is PDF/UA-1 compliant:
 
 ```r
 pdfcheck::is_pdf_compliant("report.pdf")
@@ -47,9 +46,9 @@ pdfcheck::is_pdf_compliant("report.pdf", profile = "ua2")
 
 It works with many standards: `profile` can be any of `ua1`, `ua2`, `1a`, `1b`, `2a`, `2b`, `2u`, `3a`, `3b`, `3u`, `4`, `4f`, `4e`. Default is `ua1`. You can find their meaning [here](https://docs.verapdf.org/cli/validation/#list-profiles).
 
-<br>
 
-- Generate an HTML accessibility report:
+
+### Generate an HTML accessibility report:
 
 ```r
 # Basic usage: this opens your browser
@@ -77,9 +76,9 @@ pdfcheck::accessibility_report(
 )
 ```
 
-<br>
 
-- Print an accessibility summary
+
+### Print an accessibility summary
 
 ```r
 pdfcheck::accessibility_summary("report.pdf")
@@ -97,9 +96,9 @@ pdfcheck::accessibility_summary("report.pdf")
 
 > It is important to understand the **difference between rules and checks**. A rule that has been failed may be "Missing alternative text on images", and each rule may have several checks that have been failed. For example, if the rule "Missing alt text on images" occurs 10 times in a given PDF (e.g., 10 images do not have an alternative text), that gives us 10 failed checks for that rule. More generally, **a rule is a single issue, while a check corresponds to the number of times a rule has been failed**.
 
-<br>
 
-- Get information and stats
+
+### Get information and stats
 
 ```r
 pdfcheck::verapdf(pdf_file) |>
@@ -115,7 +114,7 @@ pdfcheck::verapdf(pdf_file) |>
 #> "1.28.2"
 ```
 
-<br>
+
 
 ## Licenses
 

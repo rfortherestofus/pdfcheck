@@ -20,8 +20,17 @@ template:
 pkgdown:
   as_is: yes
 
+navbar:
+  components:
+    intro:
+      text: Upload PDF
+      href: articles/pdfcheck.html
+
 articles:
-  - title: Accessibility Guides
+  - title: How to Use {pdfcheck} Without Using R
+    contents:
+      - pdfcheck
+  - title: General Accessibility Guides
     contents:
       - what-is-pdf-accessibility
       - accessibility-issues
