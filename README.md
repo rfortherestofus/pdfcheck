@@ -16,10 +16,8 @@ If you prefer to upload a PDF to get an accessibility report, please visit [the 
 
 ```r
 # install.packages("pak")
-pak::pkg_install("rfortherestofus/pdfcheck")
+pak::pak("rfortherestofus/pdfcheck")
 ```
-
-
 
 ## Usage
 
@@ -30,8 +28,6 @@ pdfcheck::install_verapdf()
 ```
 
 > \*Should only do once and is **not** necessary if you already have the verapdf cli on PATH
-
-
 
 ### Check that a PDF is PDF/UA-1 compliant:
 
@@ -45,8 +41,6 @@ pdfcheck::is_pdf_compliant("report.pdf", profile = "ua2")
 ```
 
 It works with many standards: `profile` can be any of `ua1`, `ua2`, `1a`, `1b`, `2a`, `2b`, `2u`, `3a`, `3b`, `3u`, `4`, `4f`, `4e`. Default is `ua1`. You can find their meaning [here](https://docs.verapdf.org/cli/validation/#list-profiles).
-
-
 
 ### Generate an HTML accessibility report:
 
@@ -76,8 +70,6 @@ pdfcheck::accessibility_report(
 )
 ```
 
-
-
 ### Print an accessibility summary
 
 ```r
@@ -96,8 +88,6 @@ pdfcheck::accessibility_summary("report.pdf")
 
 > It is important to understand the **difference between rules and checks**. A rule that has been failed may be "Missing alternative text on images", and each rule may have several checks that have been failed. For example, if the rule "Missing alt text on images" occurs 10 times in a given PDF (e.g., 10 images do not have an alternative text), that gives us 10 failed checks for that rule. More generally, **a rule is a single issue, while a check corresponds to the number of times a rule has been failed**.
 
-
-
 ### Get information and stats
 
 ```r
@@ -113,8 +103,6 @@ pdfcheck::verapdf(pdf_file) |>
   pdfcheck::get_verapdf_version()
 #> "1.28.2"
 ```
-
-
 
 ## Licenses
 
