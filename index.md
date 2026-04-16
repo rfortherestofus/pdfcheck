@@ -22,7 +22,7 @@ page](https://rfortherestofus.github.io/pdfcheck/articles/pdfcheck.md).
 
 ``` r
 # install.packages("pak")
-pak::pkg_install("rfortherestofus/pdfcheck")
+pak::pak("rfortherestofus/pdfcheck")
 ```
 
 ## Usage
