@@ -134,7 +134,7 @@ accessibility_report <- function(
           '<div class="issue-card">',
           '<div class="issue-card-header">',
           '<div class="issue-card-label">',
-          '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>',
+          '<svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>',
           'Issue</div>',
           '<div class="issue-card-message">',
           htmltools::htmlEscape(user_message),
@@ -142,14 +142,15 @@ accessibility_report <- function(
           '</div>',
           '<div class="issue-card-body">',
           '<div class="issue-card-label">',
-          '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>',
+          '<svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>',
           'Fix</div>',
           '<div class="issue-card-fix">',
           htmltools::htmlEscape(how_to_fix),
           '</div>',
           '</div>',
           '<div class="issue-card-footer">',
-          '<button class="more-info-btn" ',
+          '<button type="button" class="more-info-btn" ',
+          'aria-haspopup="dialog" aria-controls="details-modal" ',
           'data-rule-id="',
           rule_id_escaped,
           '" ',
@@ -165,7 +166,7 @@ accessibility_report <- function(
           'data-verapdf="',
           description_escaped,
           '">',
-          'More info <span class="arrow">&rarr;</span>',
+          'More info <span class="arrow" aria-hidden="true">&rarr;</span>',
           '</button>',
           '</div>',
           '</div>'
@@ -348,24 +349,83 @@ accessibility_report <- function(
   '
 
   modal_js <- '
+    let modalTrigger = null;
+
+    function getFocusableElements(container) {
+      return Array.from(container.querySelectorAll(
+        "a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex=\\"-1\\"])"
+      )).filter(function(el) {
+        return el.offsetWidth > 0 || el.offsetHeight > 0 || el.getClientRects().length > 0;
+      });
+    }
+
     function closeModal() {
-      document.getElementById("details-modal").classList.remove("active");
+      const modal = document.getElementById("details-modal");
+      if (!modal.classList.contains("active")) return;
+
+      modal.classList.remove("active");
+      modal.setAttribute("aria-hidden", "true");
+
+      if (modalTrigger) {
+        modalTrigger.focus();
+        modalTrigger = null;
+      }
+    }
+
+    function openModal(btn) {
+      const modal = document.getElementById("details-modal");
+      const modalDialog = modal.querySelector(".modal-content");
+
+      document.getElementById("modal-rule-id").textContent = btn.dataset.ruleId || "";
+      document.getElementById("modal-explanation").textContent = btn.dataset.explanation || "";
+      document.getElementById("modal-iso").textContent = btn.dataset.iso || "";
+      document.getElementById("modal-clause").textContent = btn.dataset.clause || "";
+      document.getElementById("modal-verapdf").textContent = btn.dataset.verapdf || "";
+
+      modalTrigger = btn;
+      modal.classList.add("active");
+      modal.setAttribute("aria-hidden", "false");
+      modalDialog.focus();
+    }
+
+    function trapModalFocus(e) {
+      const modal = document.getElementById("details-modal");
+      if (!modal.classList.contains("active")) return;
+
+      const modalDialog = modal.querySelector(".modal-content");
+      const focusableElements = getFocusableElements(modalDialog);
+
+      if (focusableElements.length === 0) {
+        e.preventDefault();
+        modalDialog.focus();
+        return;
+      }
+
+      const firstElement = focusableElements[0];
+      const lastElement = focusableElements[focusableElements.length - 1];
+
+      if (e.shiftKey && document.activeElement === firstElement) {
+        e.preventDefault();
+        lastElement.focus();
+      } else if (e.shiftKey && document.activeElement === modalDialog) {
+        e.preventDefault();
+        lastElement.focus();
+      } else if (!e.shiftKey && document.activeElement === lastElement) {
+        e.preventDefault();
+        firstElement.focus();
+      }
     }
 
     document.addEventListener("click", function(e) {
       const btn = e.target.closest(".more-info-btn");
       if (btn) {
-        document.getElementById("modal-rule-id").textContent = btn.dataset.ruleId || "";
-        document.getElementById("modal-explanation").textContent = btn.dataset.explanation || "";
-        document.getElementById("modal-iso").textContent = btn.dataset.iso || "";
-        document.getElementById("modal-clause").textContent = btn.dataset.clause || "";
-        document.getElementById("modal-verapdf").textContent = btn.dataset.verapdf || "";
-        document.getElementById("details-modal").classList.add("active");
+        openModal(btn);
       }
     });
 
     document.addEventListener("keydown", function(e) {
       if (e.key === "Escape") closeModal();
+      if (e.key === "Tab") trapModalFocus(e);
     });
   '
 
@@ -421,14 +481,14 @@ accessibility_report <- function(
     </div>
 
     <!-- Details Modal -->
-    <div id="details-modal" class="modal-overlay" onclick="if(event.target === this) closeModal()">
-        <div class="modal-content">
+    <div id="details-modal" class="modal-overlay" aria-hidden="true" onclick="if(event.target === this) closeModal()">
+        <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-description" tabindex="-1">
             <div class="modal-header">
-                <h3>Technical Details</h3>
-                <button class="modal-close" onclick="closeModal()" aria-label="Close modal">&times;</button>
+                <h3 id="modal-title">Technical Details</h3>
+                <button class="modal-close" onclick="closeModal()" aria-label="Close technical details">&times;</button>
             </div>
             <div class="modal-body">
-                <p class="modal-intro">The following technical details reference the PDF/UA standard and veraPDF validation rules. This information is intended for developers and accessibility specialists.</p>
+                <p id="modal-description" class="modal-intro">The following technical details reference the PDF/UA standard and veraPDF validation rules. This information is intended for developers and accessibility specialists.</p>
                 <p><strong>Rule ID:</strong> <span id="modal-rule-id"></span></p>
                 <p><strong>Explanation:</strong> <span id="modal-explanation"></span></p>
                 <p><strong>ISO:</strong> <span id="modal-iso"></span></p>
