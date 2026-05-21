@@ -15,12 +15,13 @@ the content of a PDF.
 ## Get an Accessibility Report by Uploading a PDF
 
 If you prefer to upload a PDF to get an accessibility report, please
-visit [the Upload PDF
+visit [the upload PDF
 page](https://rfortherestofus.github.io/pdfcheck/articles/pdfcheck.md).
 
 ## Installation
 
 ``` r
+
 # install.packages("pak")
 pak::pak("rfortherestofus/pdfcheck")
 ```
@@ -30,6 +31,7 @@ pak::pak("rfortherestofus/pdfcheck")
 - Make sure to install verapdf\*:
 
 ``` r
+
 pdfcheck::install_verapdf()
 ```
 
@@ -39,6 +41,7 @@ pdfcheck::install_verapdf()
 ### Check that a PDF is PDF/UA-1 compliant:
 
 ``` r
+
 pdfcheck::is_pdf_compliant("report.pdf")
 #> TRUE
 
@@ -55,6 +58,7 @@ is `ua1`. You can find their meaning
 ### Generate an HTML accessibility report:
 
 ``` r
+
 # Basic usage: this opens your browser
 pdfcheck::accessibility_report("report.pdf")
 
@@ -83,6 +87,7 @@ pdfcheck::accessibility_report(
 ### Print an accessibility summary
 
 ``` r
+
 pdfcheck::accessibility_summary("report.pdf")
 #> PDF Accessibility Summary
 #> =========================
@@ -108,6 +113,7 @@ pdfcheck::accessibility_summary("report.pdf")
 ### Get information and stats
 
 ``` r
+
 pdfcheck::verapdf(pdf_file) |>
   pdfcheck::get_total_failed_checks()
 #> 195
