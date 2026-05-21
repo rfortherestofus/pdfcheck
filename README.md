@@ -10,7 +10,7 @@
 
 ## Get an Accessibility Report by Uploading a PDF
 
-If you prefer to upload a PDF to get an accessibility report, please visit [the Upload PDF page](articles/pdfcheck.html).
+If you prefer to upload a PDF to get an accessibility report, please visit [the upload PDF page](articles/pdfcheck.html).
 
 ## Installation
 
